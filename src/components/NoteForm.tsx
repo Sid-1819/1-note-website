@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Check, Copy, ChevronDown, ChevronUp, Loader2, AlertCircle, ArrowRight, Sparkles } from "lucide-react";
 
 const API_BASE = import.meta.env.VITE_API_URL || "";
+const NOTE_MAX_LENGTH = 100;
 
 const DEFAULT_MAX_VIEWS = "1";
 const DEFAULT_EXPIRY = "5m";
@@ -45,7 +46,7 @@ export function NoteForm() {
   const [copied, setCopied] = useState(false);
 
   const handleSubmit = async () => {
-    if (!content.trim()) return;
+    if (!content.trim() || content.length > NOTE_MAX_LENGTH) return;
     setLoading(true);
     setError("");
 
@@ -119,13 +120,19 @@ export function NoteForm() {
 
   return (
     <div className="glass glow-card rounded-2xl p-6 sm:p-8 space-y-5">
-      <Textarea
-        placeholder="Paste or type your secret…"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        rows={5}
-        className="resize-none text-base bg-muted/30 border-border/50 rounded-xl focus:ring-primary/30"
-      />
+      <div className="space-y-1">
+        <Textarea
+          placeholder="Paste or type your secret…"
+          value={content}
+          onChange={(e) => setContent(e.target.value.slice(0, NOTE_MAX_LENGTH))}
+          maxLength={NOTE_MAX_LENGTH}
+          rows={5}
+          className="resize-none text-base bg-muted/30 border-border/50 rounded-xl focus:ring-primary/30"
+        />
+        <p className="text-xs text-muted-foreground text-right">
+          {content.length}/{NOTE_MAX_LENGTH}
+        </p>
+      </div>
 
       <button
         type="button"
@@ -182,7 +189,7 @@ export function NoteForm() {
         variant="hero"
         size="lg"
         onClick={handleSubmit}
-        disabled={!content.trim() || loading}
+        disabled={!content.trim() || content.length > NOTE_MAX_LENGTH || loading}
         className="w-full"
       >
         {loading ? (
