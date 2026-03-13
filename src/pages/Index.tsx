@@ -27,17 +27,12 @@ const Index = () => {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        {/* Background mesh */}
-        <div className="absolute inset-0 gradient-mesh" />
-        <div className="absolute top-20 left-1/4 w-72 h-72 bg-primary/5 rounded-full blur-3xl float-animation" />
-        <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl float-animation-delayed" />
-
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-20 pb-24 sm:pt-28 sm:pb-32">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <div
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-sm text-muted-foreground mb-6 opacity-0 animate-fade-in-up"
             >
-              <Zap className="w-3.5 h-3.5 text-accent" />
+              <Zap className="w-3.5 h-3.5 text-foreground" />
               Trusted by 10,000+ teams worldwide
             </div>
             <h1
@@ -45,7 +40,7 @@ const Index = () => {
               style={{ animationDelay: "0.1s" }}
             >
               Share secrets that{" "}
-              <span className="gradient-text">disappear</span>
+              <span className="font-bold">disappear</span>
             </h1>
             <p
               className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto mb-8 leading-relaxed opacity-0 animate-fade-in-up"
@@ -86,7 +81,7 @@ const Index = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat) => (
               <div key={stat.label} className="text-center">
-                <div className="font-display text-2xl sm:text-3xl font-bold gradient-text mb-1">{stat.value}</div>
+                <div className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-1">{stat.value}</div>
                 <div className="text-sm text-muted-foreground">{stat.label}</div>
               </div>
             ))}
@@ -111,7 +106,7 @@ const Index = () => {
               className="glass glow-card rounded-2xl p-6 sm:p-8 group hover:scale-[1.02] transition-all duration-300"
               style={{ animationDelay: `${i * 0.1}s` }}
             >
-              <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
+              <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
                 <f.icon className="w-6 h-6 text-primary-foreground" />
               </div>
               <h3 className="font-display font-semibold text-foreground text-lg mb-2">{f.title}</h3>
@@ -131,7 +126,6 @@ const Index = () => {
 
       {/* CTA */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 gradient-mesh opacity-50" />
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-28 text-center">
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">
             Ready to share securely?

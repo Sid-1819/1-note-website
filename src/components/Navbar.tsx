@@ -18,7 +18,7 @@ export function Navbar() {
     <header className="w-full glass-strong sticky top-0 z-50">
       <div className="max-w-6xl mx-auto flex items-center justify-between h-16 px-4 sm:px-6">
         <Link to="/" className="flex items-center gap-2.5 font-display font-bold text-foreground text-lg">
-          <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
             <Lock className="w-4 h-4 text-primary-foreground" />
           </div>
           Vanish

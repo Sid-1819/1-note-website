@@ -7,24 +7,37 @@ import { Check, Copy, ChevronDown, ChevronUp, Loader2, AlertCircle, ArrowRight, 
 
 const API_BASE = import.meta.env.VITE_API_URL || "";
 
-const EXPIRY_OPTIONS = [
-  { label: "Never", value: "never" },
-  { label: "1 hour", value: "1h" },
-  { label: "24 hours", value: "24h" },
-  { label: "7 days", value: "7d" },
+const DEFAULT_MAX_VIEWS = "1";
+const DEFAULT_EXPIRY = "5m";
+
+const MAX_VIEWS_OPTIONS = [
+  { label: "1 view", value: "1" },
+  { label: "3 views", value: "3" },
+  { label: "5 views", value: "5" },
 ];
 
-function getExpiryDate(value: string): string | undefined {
-  if (!value || value === "never") return undefined;
+const EXPIRY_OPTIONS = [
+  { label: "2 minutes", value: "2m" },
+  { label: "5 minutes", value: "5m" },
+  { label: "10 minutes", value: "10m" },
+];
+
+const EXPIRY_MS: Record<string, number> = {
+  "2m": 2 * 60 * 1000,
+  "5m": 5 * 60 * 1000,
+  "10m": 10 * 60 * 1000,
+};
+
+function getExpiryDate(value: string): string {
   const now = Date.now();
-  const ms: Record<string, number> = { "1h": 3600000, "24h": 86400000, "7d": 604800000 };
-  return new Date(now + (ms[value] || 0)).toISOString();
+  const ms = EXPIRY_MS[value] ?? EXPIRY_MS["5m"];
+  return new Date(now + ms).toISOString();
 }
 
 export function NoteForm() {
   const [content, setContent] = useState("");
-  const [expiry, setExpiry] = useState("never");
-  const [maxViews, setMaxViews] = useState("");
+  const [expiry, setExpiry] = useState(DEFAULT_EXPIRY);
+  const [maxViews, setMaxViews] = useState(DEFAULT_MAX_VIEWS);
   const [showOptions, setShowOptions] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -36,10 +49,11 @@ export function NoteForm() {
     setLoading(true);
     setError("");
 
-    const body: Record<string, unknown> = { content };
-    const expiresAt = getExpiryDate(expiry);
-    if (expiresAt) body.expiresAt = expiresAt;
-    if (maxViews && Number(maxViews) > 0) body.maxViews = Number(maxViews);
+    const body: Record<string, unknown> = {
+      content,
+      expiresAt: getExpiryDate(expiry),
+      maxViews: Number(maxViews),
+    };
 
     try {
       const res = await fetch(`${API_BASE}/s`, {
@@ -71,8 +85,8 @@ export function NoteForm() {
 
   const handleReset = () => {
     setContent("");
-    setExpiry("never");
-    setMaxViews("");
+    setExpiry(DEFAULT_EXPIRY);
+    setMaxViews(DEFAULT_MAX_VIEWS);
     setNoteUrl("");
     setError("");
     setCopied(false);
@@ -125,10 +139,25 @@ export function NoteForm() {
       {showOptions && (
         <div className="grid grid-cols-2 gap-3 animate-fade-in">
           <div className="space-y-1.5">
+            <label className="text-sm font-medium text-foreground">Max views</label>
+            <Select value={maxViews} onValueChange={setMaxViews}>
+              <SelectTrigger className="bg-muted/30 border-border/50">
+                <SelectValue placeholder="1 view" />
+              </SelectTrigger>
+              <SelectContent>
+                {MAX_VIEWS_OPTIONS.map((o) => (
+                  <SelectItem key={o.value} value={o.value}>
+                    {o.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1.5">
             <label className="text-sm font-medium text-foreground">Expires in</label>
             <Select value={expiry} onValueChange={setExpiry}>
               <SelectTrigger className="bg-muted/30 border-border/50">
-                <SelectValue placeholder="Never" />
+                <SelectValue placeholder="5 minutes" />
               </SelectTrigger>
               <SelectContent>
                 {EXPIRY_OPTIONS.map((o) => (
@@ -138,17 +167,6 @@ export function NoteForm() {
                 ))}
               </SelectContent>
             </Select>
-          </div>
-          <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground">Max views</label>
-            <Input
-              type="number"
-              min={1}
-              placeholder="Unlimited"
-              value={maxViews}
-              onChange={(e) => setMaxViews(e.target.value)}
-              className="bg-muted/30 border-border/50"
-            />
           </div>
         </div>
       )}

@@ -86,14 +86,13 @@ const Pricing = () => {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 gradient-mesh" />
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-20 pb-16 sm:pt-28 sm:pb-20 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-sm text-muted-foreground mb-6 opacity-0 animate-fade-in-up">
-            <Star className="w-3.5 h-3.5 text-accent" />
+            <Star className="w-3.5 h-3.5 text-foreground" />
             Simple, transparent pricing
           </div>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-5 opacity-0 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
-            Plans that <span className="gradient-text">scale with you</span>
+            Plans that <span className="font-bold">scale with you</span>
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto opacity-0 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
             Start free, upgrade when you need more. No hidden fees, no surprises.
@@ -107,14 +106,12 @@ const Pricing = () => {
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={`relative glass rounded-2xl p-6 sm:p-8 flex flex-col transition-all duration-300 hover:scale-[1.02] ${
-                plan.popular
-                  ? "glow-primary border-primary/30 ring-1 ring-primary/20"
-                  : "glow-card"
+              className={`relative glass rounded-2xl p-6 sm:p-8 flex flex-col transition-all duration-300 hover:scale-[1.02] glow-card ${
+                plan.popular ? "ring-2 ring-foreground/20" : ""
               }`}
             >
               {plan.popular && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full gradient-primary text-xs font-semibold text-primary-foreground">
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-primary text-xs font-semibold text-primary-foreground">
                   Most popular
                 </div>
               )}
@@ -131,7 +128,7 @@ const Pricing = () => {
               <ul className="space-y-3 mb-8 flex-1">
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-                    <Check className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-foreground shrink-0 mt-0.5" />
                     {f}
                   </li>
                 ))}
@@ -164,7 +161,6 @@ const Pricing = () => {
 
       {/* CTA */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 gradient-mesh opacity-50" />
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-20 text-center">
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">
             Start sharing securely today

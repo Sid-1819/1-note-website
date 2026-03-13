@@ -59,14 +59,13 @@ const Features = () => {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 gradient-mesh" />
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-20 pb-16 sm:pt-28 sm:pb-20 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-sm text-muted-foreground mb-6 opacity-0 animate-fade-in-up">
-            <Zap className="w-3.5 h-3.5 text-accent" />
+            <Zap className="w-3.5 h-3.5 text-foreground" />
             Enterprise-grade security
           </div>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-5 opacity-0 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
-            Built for <span className="gradient-text">serious security</span>
+            Built for <span className="font-bold">serious security</span>
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto opacity-0 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
             Every feature is designed with one goal: keeping your sensitive information safe and ephemeral.
@@ -86,10 +85,10 @@ const Features = () => {
                 {i < howItWorks.length - 1 && (
                   <div className="hidden md:block absolute top-12 left-[60%] w-[80%] h-px border-t border-dashed border-border" />
                 )}
-                <div className="w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform duration-300">
                   <item.icon className="w-7 h-7 text-primary-foreground" />
                 </div>
-                <div className="text-xs font-bold text-primary mb-2 font-display">{item.step}</div>
+                <div className="text-xs font-bold text-foreground mb-2 font-display">{item.step}</div>
                 <h3 className="font-display font-semibold text-foreground text-lg mb-2">{item.title}</h3>
                 <p className="text-muted-foreground text-sm">{item.desc}</p>
               </div>
@@ -114,7 +113,7 @@ const Features = () => {
               key={f.title}
               className="glass glow-card rounded-2xl p-6 sm:p-8 group hover:scale-[1.02] transition-all duration-300"
             >
-              <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
+              <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
                 <f.icon className="w-6 h-6 text-primary-foreground" />
               </div>
               <h3 className="font-display font-semibold text-foreground text-lg mb-2">{f.title}</h3>
@@ -122,7 +121,7 @@ const Features = () => {
               <ul className="space-y-1.5">
                 {f.details.map((d) => (
                   <li key={d} className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-accent shrink-0" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-foreground shrink-0" />
                     {d}
                   </li>
                 ))}
@@ -134,7 +133,6 @@ const Features = () => {
 
       {/* CTA */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 gradient-mesh opacity-50" />
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-20 text-center">
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">
             Ready to try it?
