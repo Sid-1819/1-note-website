@@ -66,7 +66,16 @@ export function NoteForm() {
 
       if (!res.ok) {
         const text = await res.text().catch(() => "");
-        if (res.status === 429) throw new Error("Too many requests. Please wait a moment.");
+        if (res.status === 429) {
+          let msg = "Too many notes created. Limit: 3 per minute, 10 per 24 hours. Try again later.";
+          try {
+            const body = JSON.parse(text);
+            if (body?.message) msg = body.message;
+          } catch {
+            if (text) msg = text;
+          }
+          throw new Error(msg);
+        }
         throw new Error(text || "Something went wrong. Please try again.");
       }
 
@@ -142,6 +151,9 @@ export function NoteForm() {
         />
         <p className="text-xs text-muted-foreground text-right">
           {content.length}/{NOTE_MAX_LENGTH}
+        </p>
+        <p className="text-xs text-muted-foreground">
+          Limit: 3 notes per minute, 10 per day per device.
         </p>
       </div>
 
