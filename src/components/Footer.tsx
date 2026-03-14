@@ -22,6 +22,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><Link to="/features" className="hover:text-foreground transition-colors">Features</Link></li>
               <li><Link to="/pricing" className="hover:text-foreground transition-colors">Pricing</Link></li>
+              <li><Link to="/roadmap" className="hover:text-foreground transition-colors">Roadmap</Link></li>
               <li><span className="cursor-default">API</span></li>
             </ul>
           </div>
@@ -38,7 +39,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><span className="cursor-default">Privacy</span></li>
               <li><span className="cursor-default">Terms</span></li>
-              <li><span className="cursor-default">Security</span></li>
+              <li><Link to="/security" className="hover:text-foreground transition-colors">Security</Link></li>
             </ul>
           </div>
         </div>

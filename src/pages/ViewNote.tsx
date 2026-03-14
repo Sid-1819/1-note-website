@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,23 @@ import { ApiError, getNote } from "@/lib/api";
 
 const ViewNote = () => {
   const { slug } = useParams<{ slug: string }>();
+  const metaRef = useRef<HTMLMetaElement | null>(null);
+
+  // Ensure note reveal pages are never indexed by search engines
+  useEffect(() => {
+    if (!slug) return;
+    const meta = document.createElement("meta");
+    meta.name = "robots";
+    meta.content = "noindex,nofollow";
+    metaRef.current = meta;
+    document.head.appendChild(meta);
+    return () => {
+      if (metaRef.current && metaRef.current.parentNode) {
+        metaRef.current.parentNode.removeChild(metaRef.current);
+        metaRef.current = null;
+      }
+    };
+  }, [slug]);
 
   const { data, isPending, isError } = useQuery({
     queryKey: ["note", slug],
@@ -97,13 +115,15 @@ const ViewNote = () => {
             <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center mx-auto">
               <Lock className="w-7 h-7 text-primary-foreground" />
             </div>
-            <pre className="whitespace-pre-wrap rounded-md border bg-muted/50 p-4 text-sm font-mono text-left">
-              {data.content}
-            </pre>
-            <p className="text-muted-foreground text-sm text-center">
-              This note was displayed once and is no longer available.
-            </p>
-            <Button variant="outline-glow" size="lg" asChild className="w-full">
+            <div className="space-y-4 animate-fade-in">
+              <pre className="whitespace-pre-wrap rounded-md border bg-muted/50 p-4 text-sm font-mono text-left">
+                {data.content}
+              </pre>
+              <p className="text-muted-foreground text-sm text-center">
+                This note was displayed once and is no longer available.
+              </p>
+            </div>
+            <Button variant="outline-glow" size="lg" asChild className="w-full transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]">
               <Link to="/">
                 Back to home
                 <ArrowRight className="w-4 h-4" />

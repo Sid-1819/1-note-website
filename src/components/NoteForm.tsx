@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Check, Copy, ChevronDown, ChevronUp, Loader2, AlertCircle, ArrowRight, Sparkles } from "lucide-react";
+import { toast } from "sonner";
 
 const API_BASE = import.meta.env.VITE_API_URL || "";
 const NOTE_MAX_LENGTH = 100;
@@ -81,6 +82,7 @@ export function NoteForm() {
   const handleCopy = async () => {
     await navigator.clipboard.writeText(noteUrl);
     setCopied(true);
+    toast.success("Link copied to clipboard");
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -103,8 +105,17 @@ export function NoteForm() {
           <span className="font-display font-semibold text-foreground">Your secure link is ready</span>
         </div>
         <div className="flex gap-2">
-          <Input readOnly value={noteUrl} className="font-mono text-sm bg-muted/50 border-border/50" />
-          <Button variant="outline" size="icon" onClick={handleCopy} className="shrink-0">
+          <Input
+            readOnly
+            value={noteUrl}
+            className="font-mono text-sm bg-muted/50 border border-primary/20 focus-visible:ring-primary/20"
+          />
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={handleCopy}
+            className={`shrink-0 transition-transform duration-200 ${copied ? "scale-110" : "hover:scale-105"}`}
+          >
             {copied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
           </Button>
         </div>

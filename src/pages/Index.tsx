@@ -4,8 +4,20 @@ import { NoteForm } from "@/components/NoteForm";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import {
-  Shield, Lock, Eye, ArrowRight, Zap, Globe, Timer,
+  Shield, Lock, Eye, ArrowRight, Zap, Globe, Timer, FileText, Key, Trash2, UserX,
 } from "lucide-react";
+
+const trustSignals = [
+  { icon: Lock, label: "Encrypted at rest" },
+  { icon: UserX, label: "No account required" },
+  { icon: Trash2, label: "Automatic destruction" },
+];
+
+const howItWorksSteps = [
+  { step: "01", title: "Write a note", desc: "Paste or type your secret in the box.", icon: FileText },
+  { step: "02", title: "Share the link", desc: "Get a unique link and send it to the person you want.", icon: Key },
+  { step: "03", title: "Gone after viewing", desc: "The note appears once, then disappears forever.", icon: Shield },
+];
 
 const features = [
   { icon: Shield, title: "End-to-end encrypted", desc: "Your notes are encrypted and never stored in plain text." },
@@ -64,12 +76,42 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Note creation card */}
+          {/* How it works */}
+          <div className="max-w-4xl mx-auto mb-16 opacity-0 animate-fade-in-up" style={{ animationDelay: "0.35s" }}>
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground text-center mb-10">
+              How it works
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {howItWorksSteps.map((item, i) => (
+                <div key={item.step} className="relative text-center group">
+                  {i < howItWorksSteps.length - 1 && (
+                    <div className="hidden md:block absolute top-12 left-[60%] w-[80%] h-px border-t border-dashed border-border" />
+                  )}
+                  <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform duration-300">
+                    <item.icon className="w-7 h-7 text-primary-foreground" />
+                  </div>
+                  <div className="text-xs font-bold text-foreground mb-2 font-display">{item.step}</div>
+                  <h3 className="font-display font-semibold text-foreground text-lg mb-2">{item.title}</h3>
+                  <p className="text-muted-foreground text-sm">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Trust signals + Note creation card */}
           <div
             id="create"
-            className="w-full max-w-xl mx-auto opacity-0 animate-fade-in-up"
+            className="w-full max-w-xl mx-auto space-y-4 opacity-0 animate-fade-in-up"
             style={{ animationDelay: "0.4s" }}
           >
+            <div className="glass rounded-xl px-4 py-3 flex flex-wrap items-center justify-center gap-6 sm:gap-8 text-sm text-muted-foreground">
+              {trustSignals.map((item) => (
+                <div key={item.label} className="flex items-center gap-2">
+                  <item.icon className="w-4 h-4 text-foreground shrink-0" />
+                  <span>{item.label}</span>
+                </div>
+              ))}
+            </div>
             <NoteForm />
           </div>
         </div>

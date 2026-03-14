@@ -7,6 +7,7 @@ import { useState } from "react";
 const navLinks = [
   { label: "Home", to: "/" },
   { label: "Features", to: "/features" },
+  { label: "Security", to: "/security" },
 ];
 
 export function Navbar() {

@@ -4,52 +4,52 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import {
   Shield, Lock, Eye, Zap, Globe, Timer, Key, FileText,
-  Server, ArrowRight, CheckCircle2,
+  ArrowRight, CheckCircle2,
 } from "lucide-react";
 
 const mainFeatures = [
   {
     icon: Lock,
-    title: "End-to-End Encryption",
-    desc: "Notes are encrypted before leaving your browser. We never see your data — not even temporarily.",
-    details: ["AES-256-GCM encryption", "Client-side key generation", "Zero plaintext storage"],
+    title: "Only you and the recipient can read it",
+    desc: "Your note is encrypted before it leaves your browser. We never see your content — not even temporarily.",
+    details: ["Encrypted in transit and at rest", "No plaintext on our servers", "You stay in control"],
   },
   {
     icon: Eye,
-    title: "Self-Destructing Notes",
-    desc: "Set notes to expire after a single view, a time limit, or a maximum number of reads.",
-    details: ["View-count expiry", "Time-based expiry", "Manual destruction"],
+    title: "Your note vanishes after viewing",
+    desc: "Open the link once and the note is gone. No trace left behind. You choose: one view, a few views, or a time limit.",
+    details: ["One-time or limited views", "Time-based expiry", "Automatic deletion"],
   },
   {
     icon: Shield,
-    title: "Zero-Knowledge Architecture",
-    desc: "Our servers store only encrypted blobs. We couldn't read your notes even if compelled.",
-    details: ["No metadata logging", "No IP tracking", "Open-source verifiable"],
+    title: "We can't read your notes — even if asked",
+    desc: "We store only encrypted data. No metadata or IP tracking. Your secrets stay between you and the person with the link.",
+    details: ["No access to your content", "No tracking of who viewed", "Privacy by design"],
   },
   {
     icon: Timer,
-    title: "Flexible Expiration",
-    desc: "Choose exactly when your notes disappear — from 1 hour to 30 days, or after a set number of views.",
-    details: ["1h, 24h, 7d presets", "Custom durations", "View-based limits"],
+    title: "You choose when it disappears",
+    desc: "Set how long the note lasts: minutes, hours, or days. Or cap it by number of views. You're in control.",
+    details: ["Quick expiry presets", "Custom duration", "View-based limits"],
   },
   {
     icon: Key,
-    title: "Password Protection",
-    desc: "Add an extra layer with an optional password. Recipients must enter it to decrypt the note.",
-    details: ["PBKDF2 key derivation", "Brute-force protection", "Optional for any note"],
+    title: "Password-protected notes",
+    desc: "Add an optional password so only someone who has it can open the note. Extra protection when you need it.",
+    details: ["Optional for any note", "Recipient enters passphrase", "Coming soon"],
   },
   {
     icon: Globe,
-    title: "API Access",
-    desc: "Integrate secure note sharing into your own apps and workflows with our simple REST API.",
-    details: ["RESTful endpoints", "Webhook support", "Rate limiting built-in"],
+    title: "Use 1Note from your own apps",
+    desc: "Integrate secure note sharing into your workflows with a simple API. Build automation and tools on top of 1Note.",
+    details: ["REST API", "Webhooks and integrations", "Coming soon"],
   },
 ];
 
 const howItWorks = [
-  { step: "01", title: "Write your secret", desc: "Type or paste sensitive content into the editor.", icon: FileText },
-  { step: "02", title: "Get a unique link", desc: "We encrypt and generate a one-time URL.", icon: Key },
-  { step: "03", title: "Share safely", desc: "Send the link — it self-destructs after being viewed.", icon: Shield },
+  { step: "01", title: "Write a note", desc: "Paste or type your secret in the box.", icon: FileText },
+  { step: "02", title: "Share the link", desc: "Get a unique link and send it to the person you want.", icon: Key },
+  { step: "03", title: "Gone after viewing", desc: "The note appears once, then disappears forever.", icon: Shield },
 ];
 
 const Features = () => {
