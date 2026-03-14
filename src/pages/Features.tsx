@@ -17,7 +17,7 @@ const mainFeatures = [
   {
     icon: Eye,
     title: "Self-Destructing Notes",
-    desc: "Set notes to vanish after a single view, a time limit, or a maximum number of reads.",
+    desc: "Set notes to expire after a single view, a time limit, or a maximum number of reads.",
     details: ["View-count expiry", "Time-based expiry", "Manual destruction"],
   },
   {

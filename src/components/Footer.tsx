@@ -11,7 +11,7 @@ export function Footer() {
               <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
                 <Lock className="w-3.5 h-3.5 text-primary-foreground" />
               </div>
-              Vanish
+              1Note
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Share secrets that disappear. Zero-knowledge, end-to-end encrypted note sharing.
@@ -43,7 +43,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-muted-foreground">© 2026 Vanish. All rights reserved.</p>
+          <p className="text-xs text-muted-foreground">© 2026 1Note. All rights reserved.</p>
           <p className="text-xs text-muted-foreground">Built with privacy in mind.</p>
         </div>
       </div>

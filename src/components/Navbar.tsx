@@ -5,8 +5,8 @@ import { useTheme } from "@/components/ThemeProvider";
 import { useState } from "react";
 
 const navLinks = [
+  { label: "Home", to: "/" },
   { label: "Features", to: "/features" },
-  { label: "Pricing", to: "/pricing" },
 ];
 
 export function Navbar() {
@@ -21,7 +21,7 @@ export function Navbar() {
           <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
             <Lock className="w-4 h-4 text-primary-foreground" />
           </div>
-          Vanish
+          1Note
         </Link>
 
         {/* Desktop nav */}
@@ -45,7 +45,6 @@ export function Navbar() {
           <Button variant="ghost" size="icon" onClick={toggleTheme} className="rounded-lg">
             {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </Button>
-          <Button variant="outline-glow" size="sm">Login</Button>
         </div>
 
         {/* Mobile toggle */}
@@ -72,7 +71,6 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Button variant="outline-glow" size="sm" className="w-full mt-2">Login</Button>
         </div>
       )}
     </header>
