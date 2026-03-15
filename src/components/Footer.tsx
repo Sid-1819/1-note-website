@@ -11,7 +11,7 @@ export function Footer() {
               <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
                 <Lock className="w-3.5 h-3.5 text-primary-foreground" />
               </div>
-              Vanish
+              1Note
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Share secrets that disappear. Zero-knowledge, end-to-end encrypted note sharing.
@@ -22,6 +22,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><Link to="/features" className="hover:text-foreground transition-colors">Features</Link></li>
               <li><Link to="/pricing" className="hover:text-foreground transition-colors">Pricing</Link></li>
+              <li><Link to="/roadmap" className="hover:text-foreground transition-colors">Roadmap</Link></li>
               <li><span className="cursor-default">API</span></li>
             </ul>
           </div>
@@ -38,12 +39,12 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><span className="cursor-default">Privacy</span></li>
               <li><span className="cursor-default">Terms</span></li>
-              <li><span className="cursor-default">Security</span></li>
+              <li><Link to="/security" className="hover:text-foreground transition-colors">Security</Link></li>
             </ul>
           </div>
         </div>
         <div className="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-muted-foreground">© 2026 Vanish. All rights reserved.</p>
+          <p className="text-xs text-muted-foreground">© 2026 1Note. All rights reserved.</p>
           <p className="text-xs text-muted-foreground">Built with privacy in mind.</p>
         </div>
       </div>

@@ -62,7 +62,7 @@ const plans = [
 
 const faqs = [
   {
-    q: "Can I use Vanish for free?",
+    q: "Can I use 1Note for free?",
     a: "Yes! The free plan includes unlimited notes with self-destructing links. No credit card required.",
   },
   {
@@ -166,7 +166,7 @@ const Pricing = () => {
             Start sharing securely today
           </h2>
           <p className="text-muted-foreground text-lg max-w-md mx-auto mb-8">
-            Join thousands of teams who trust Vanish with their sensitive data.
+            Join thousands of teams who trust 1Note with their sensitive data.
           </p>
           <Button variant="hero" size="xl" asChild>
             <Link to="/">

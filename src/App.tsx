@@ -7,6 +7,8 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import Index from "./pages/Index";
 import Features from "./pages/Features";
 import Pricing from "./pages/Pricing";
+import Security from "./pages/Security";
+import Roadmap from "./pages/Roadmap";
 import ViewNote from "./pages/ViewNote";
 import NotFound from "./pages/NotFound";
 
@@ -23,6 +25,8 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/features" element={<Features />} />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/security" element={<Security />} />
+            <Route path="/roadmap" element={<Roadmap />} />
             <Route path="/s/:slug" element={<ViewNote />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
