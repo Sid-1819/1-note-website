@@ -113,7 +113,7 @@ export function NoteForm() {
       }
 
       const data = await res.json();
-      setNoteUrl(`${window.location.origin}/s/${data.slug}`);
+      setNoteUrl(data.url ?? `${window.location.origin}/s/${data.slug}`);
       setCreatedWithPassword(Boolean(password.trim()));
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Something went wrong.");

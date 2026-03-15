@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,25 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Lock, ArrowRight, Loader2 } from "lucide-react";
 import { ApiError, getNote } from "@/lib/api";
 
+const NOTE_VIEW_MESSAGES = [
+  "This is your friend's secret. Have a good look.",
+  "You've seen it. No take-backsies.",
+  "The secret has been revealed. Use your powers wisely.",
+  "Consider yourself in the loop. Don't blow it.",
+  "You're one of the chosen few. No pressure.",
+  "That's the tea. Sip responsibly.",
+  "You're in on it now. What happens next is on you.",
+  "Secret received. Your mission, should you choose to accept it, is to keep it.",
+  "The cat's out of the bag. Be nice to the cat.",
+  "You've been let in. Don't let the side down.",
+];
+
+function getRandomNoteMessage() {
+  return NOTE_VIEW_MESSAGES[Math.floor(Math.random() * NOTE_VIEW_MESSAGES.length)];
+}
+
 const ViewNote = () => {
+  const randomMessage = useMemo(() => getRandomNoteMessage(), []);
   const { slug } = useParams<{ slug: string }>();
   const metaRef = useRef<HTMLMetaElement | null>(null);
   const [unlockPassword, setUnlockPassword] = useState("");
@@ -216,7 +234,7 @@ const ViewNote = () => {
                 {contentToShow}
               </pre>
               <p className="text-muted-foreground text-sm text-center">
-                This note was displayed once and is no longer available.
+                {randomMessage}
               </p>
             </div>
             <Button variant="outline-glow" size="lg" asChild className="w-full transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]">

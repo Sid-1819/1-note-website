@@ -4,7 +4,7 @@ import { NoteForm } from "@/components/NoteForm";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import {
-  Shield, Lock, Eye, ArrowRight, Zap, Globe, Timer, FileText, Key, Trash2, UserX,
+  Shield, Lock, Eye, ArrowRight, Zap, FileText, Key, Trash2, UserX, Code2,
 } from "lucide-react";
 
 const trustSignals = [
@@ -25,11 +25,11 @@ const features = [
   { icon: Lock, title: "Zero knowledge", desc: "We can't read your notes. Only the link holder can." },
 ];
 
-const stats = [
-  { value: "10M+", label: "Notes shared" },
-  { value: "99.9%", label: "Uptime" },
-  { value: "0", label: "Data breaches" },
-  { value: "<100ms", label: "Response time" },
+const valueBullets = [
+  { icon: UserX, label: "No signup" },
+  { icon: Lock, label: "Encrypted" },
+  { icon: Code2, label: "REST API" },
+  { icon: Trash2, label: "Self-destructing" },
 ];
 
 const Index = () => {
@@ -45,33 +45,33 @@ const Index = () => {
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-sm text-muted-foreground mb-6 opacity-0 animate-fade-in-up"
             >
               <Zap className="w-3.5 h-3.5 text-foreground" />
-              Trusted by 10,000+ teams worldwide
+              API-first secret sharing
             </div>
             <h1
               className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight font-display mb-5 opacity-0 animate-fade-in-up"
               style={{ animationDelay: "0.1s" }}
             >
-              Share secrets that{" "}
-              <span className="font-bold">disappear</span>
+              Secure, ephemeral secret sharing{" "}
+              <span className="font-bold">for your apps</span>
             </h1>
             <p
               className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto mb-8 leading-relaxed opacity-0 animate-fade-in-up"
               style={{ animationDelay: "0.2s" }}
             >
-              Paste a note, get a one-time link. It self-destructs after it's been read. No accounts, no traces, no worries.
+              One API to create and consume one-time secrets. For devs, backend teams, and CI. Or use the web UI to share a note in seconds — no account required.
             </p>
             <div
               className="flex flex-col sm:flex-row items-center justify-center gap-3 opacity-0 animate-fade-in-up"
               style={{ animationDelay: "0.3s" }}
             >
               <Button variant="hero" size="xl" asChild>
-                <a href="#create">
-                  Start sharing securely
+                <Link to="/docs">
+                  Read the docs
                   <ArrowRight className="w-4 h-4" />
-                </a>
+                </Link>
               </Button>
               <Button variant="outline-glow" size="xl" asChild>
-                <Link to="/features">See how it works</Link>
+                <a href="#create">Create a note</a>
               </Button>
             </div>
           </div>
@@ -117,14 +117,14 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Stats */}
+      {/* Value bullets */}
       <section className="border-y border-border bg-card/30 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-1">{stat.value}</div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
+          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 sm:gap-x-14">
+            {valueBullets.map((item) => (
+              <div key={item.label} className="flex items-center gap-2 text-sm text-muted-foreground">
+                <item.icon className="w-4 h-4 text-foreground shrink-0" />
+                <span>{item.label}</span>
               </div>
             ))}
           </div>
