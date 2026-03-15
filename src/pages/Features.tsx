@@ -35,8 +35,8 @@ const mainFeatures = [
   {
     icon: Key,
     title: "Password-protected notes",
-    desc: "Add an optional password so only someone who has it can open the note. Extra protection when you need it.",
-    details: ["Optional for any note", "Recipient enters passphrase", "Coming soon"],
+    desc: "Add an optional passphrase so only someone who has it can open the note. Share the link and passphrase separately for extra protection.",
+    details: ["Optional for any note", "Recipient enters passphrase to unlock", "Wrong attempts rate-limited per link"],
   },
   {
     icon: Globe,

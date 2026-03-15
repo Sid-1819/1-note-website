@@ -1,17 +1,20 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Lock, ArrowRight } from "lucide-react";
+import { Lock, ArrowRight, Loader2 } from "lucide-react";
 import { ApiError, getNote } from "@/lib/api";
 
 const ViewNote = () => {
   const { slug } = useParams<{ slug: string }>();
   const metaRef = useRef<HTMLMetaElement | null>(null);
+  const [unlockPassword, setUnlockPassword] = useState("");
+  const [unlockedContent, setUnlockedContent] = useState<string | null>(null);
 
   // Ensure note reveal pages are never indexed by search engines
   useEffect(() => {
@@ -29,13 +32,43 @@ const ViewNote = () => {
     };
   }, [slug]);
 
-  const { data, isPending, isError } = useQuery({
+  const {
+    data,
+    isPending,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["note", slug],
     queryFn: () => getNote(slug!),
     enabled: Boolean(slug),
-    retry: (_, error) => (error as ApiError)?.status !== 404,
+    retry: (_, err) => (err as ApiError)?.status !== 404 && (err as ApiError)?.status !== 403,
     gcTime: 0,
   });
+
+  const unlockMutation = useMutation({
+    mutationFn: (pwd: string) => getNote(slug!, pwd),
+    onSuccess: (result) => {
+      setUnlockedContent(result.content);
+    },
+  });
+
+  const apiError = error as ApiError | undefined;
+  const needPassword =
+    isError &&
+    apiError?.status === 403 &&
+    apiError?.body?.code === "PASSWORD_REQUIRED";
+  const wrongPassword =
+    unlockMutation.isError &&
+    (unlockMutation.error as ApiError)?.body?.code === "INVALID_PASSWORD";
+  const rateLimited =
+    unlockMutation.isError &&
+    (unlockMutation.error as ApiError)?.status === 429;
+
+  const handleUnlock = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!unlockPassword.trim()) return;
+    unlockMutation.mutate(unlockPassword.trim());
+  };
 
   if (!slug) {
     return (
@@ -54,7 +87,7 @@ const ViewNote = () => {
     );
   }
 
-  if (isPending) {
+  if (isPending && !needPassword) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
         <Navbar />
@@ -81,7 +114,67 @@ const ViewNote = () => {
     );
   }
 
-  if (isError) {
+  if (needPassword && !unlockedContent) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col">
+        <Navbar />
+        <main className="flex-1 flex items-center justify-center px-4 py-20">
+          <div className="relative glass glow-card rounded-2xl max-w-md w-full p-8 sm:p-10 space-y-5">
+            <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center mx-auto">
+              <Lock className="w-7 h-7 text-primary-foreground" />
+            </div>
+            <p className="text-center font-medium text-foreground">This note is protected</p>
+            <p className="text-sm text-muted-foreground text-center">
+              Enter the passphrase to view it.
+            </p>
+            <form onSubmit={handleUnlock} className="space-y-3">
+              <Input
+                type="password"
+                placeholder="Passphrase"
+                value={unlockPassword}
+                onChange={(e) => setUnlockPassword(e.target.value)}
+                className="bg-muted/30 border-border/50"
+                autoComplete="current-password"
+                disabled={unlockMutation.isPending}
+              />
+              {wrongPassword && (
+                <p className="text-sm text-destructive">Wrong passphrase. Try again.</p>
+              )}
+              {rateLimited && (
+                <Alert variant="destructive">
+                  <AlertDescription>
+                    Too many wrong attempts. Try again in 15 minutes.
+                  </AlertDescription>
+                </Alert>
+              )}
+              <Button
+                type="submit"
+                variant="hero"
+                size="lg"
+                className="w-full"
+                disabled={!unlockPassword.trim() || unlockMutation.isPending}
+              >
+                {unlockMutation.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Checking…
+                  </>
+                ) : (
+                  "Unlock"
+                )}
+              </Button>
+            </form>
+            <Button variant="ghost" size="sm" asChild className="w-full">
+              <Link to="/">Back to home</Link>
+            </Button>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (isError && !needPassword) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
         <Navbar />
@@ -106,6 +199,9 @@ const ViewNote = () => {
     );
   }
 
+  const contentToShow = unlockedContent ?? data?.content;
+  if (!contentToShow) return null;
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
@@ -117,7 +213,7 @@ const ViewNote = () => {
             </div>
             <div className="space-y-4 animate-fade-in">
               <pre className="whitespace-pre-wrap rounded-md border bg-muted/50 p-4 text-sm font-mono text-left">
-                {data.content}
+                {contentToShow}
               </pre>
               <p className="text-muted-foreground text-sm text-center">
                 This note was displayed once and is no longer available.
