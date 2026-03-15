@@ -30,24 +30,54 @@ const EXPIRY_MS: Record<string, number> = {
   "10m": 10 * 60 * 1000,
 };
 
+const PASSWORD_MIN_LENGTH = 8;
+const PASSWORD_MAX_LENGTH = 128;
+
 function getExpiryDate(value: string): string {
   const now = Date.now();
   const ms = EXPIRY_MS[value] ?? EXPIRY_MS["5m"];
   return new Date(now + ms).toISOString();
 }
 
+function isStrongPassword(value: string): boolean {
+  if (value.length < PASSWORD_MIN_LENGTH || value.length > PASSWORD_MAX_LENGTH) return false;
+  if (!/[a-z]/.test(value)) return false;
+  if (!/[A-Z]/.test(value)) return false;
+  if (!/[0-9]/.test(value)) return false;
+  if (!/[!@#$%^&*(),.?":{}|<>_\-+=[\]\\;/'`~]/.test(value)) return false;
+  return true;
+}
+
+function passwordError(value: string): string | null {
+  if (!value.trim()) return null;
+  if (value.length < PASSWORD_MIN_LENGTH) return `At least ${PASSWORD_MIN_LENGTH} characters`;
+  if (value.length > PASSWORD_MAX_LENGTH) return `At most ${PASSWORD_MAX_LENGTH} characters`;
+  if (!/[a-z]/.test(value)) return "Add a lowercase letter";
+  if (!/[A-Z]/.test(value)) return "Add an uppercase letter";
+  if (!/[0-9]/.test(value)) return "Add a digit";
+  if (!/[!@#$%^&*(),.?":{}|<>_\-+=[\]\\;/'`~]/.test(value)) return "Add a symbol (e.g. !@#$)";
+  return null;
+}
+
 export function NoteForm() {
   const [content, setContent] = useState("");
   const [expiry, setExpiry] = useState(DEFAULT_EXPIRY);
   const [maxViews, setMaxViews] = useState(DEFAULT_MAX_VIEWS);
+  const [password, setPassword] = useState("");
   const [showOptions, setShowOptions] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [noteUrl, setNoteUrl] = useState("");
   const [copied, setCopied] = useState(false);
+  const [createdWithPassword, setCreatedWithPassword] = useState(false);
 
   const handleSubmit = async () => {
     if (!content.trim() || content.length > NOTE_MAX_LENGTH) return;
+    const pwdErr = password.trim() ? passwordError(password) : null;
+    if (pwdErr) {
+      setError(`Passphrase: ${pwdErr}`);
+      return;
+    }
     setLoading(true);
     setError("");
 
@@ -56,6 +86,9 @@ export function NoteForm() {
       expiresAt: getExpiryDate(expiry),
       maxViews: Number(maxViews),
     };
+    if (password.trim()) {
+      body.password = password.trim();
+    }
 
     try {
       const res = await fetch(`${API_BASE}/s`, {
@@ -80,7 +113,8 @@ export function NoteForm() {
       }
 
       const data = await res.json();
-      setNoteUrl(`${window.location.origin}/s/${data.slug}`);
+      setNoteUrl(data.url ?? `${window.location.origin}/s/${data.slug}`);
+      setCreatedWithPassword(Boolean(password.trim()));
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Something went wrong.");
     } finally {
@@ -99,9 +133,11 @@ export function NoteForm() {
     setContent("");
     setExpiry(DEFAULT_EXPIRY);
     setMaxViews(DEFAULT_MAX_VIEWS);
+    setPassword("");
     setNoteUrl("");
     setError("");
     setCopied(false);
+    setCreatedWithPassword(false);
   };
 
   if (noteUrl) {
@@ -129,7 +165,9 @@ export function NoteForm() {
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">
-          This link will self-destruct after it&apos;s been viewed. Share it only with the intended recipient.
+          {createdWithPassword
+            ? "Share this link and the passphrase with your recipient. The link will self-destruct after it's been viewed."
+            : "This link will self-destruct after it's been viewed. Share it only with the intended recipient."}
         </p>
         <Button variant="ghost" onClick={handleReset} className="w-full text-muted-foreground">
           <Sparkles className="w-4 h-4 mr-1" /> Create another
@@ -198,6 +236,23 @@ export function NoteForm() {
               </SelectContent>
             </Select>
           </div>
+          <div className="col-span-2 space-y-1.5">
+            <label className="text-sm font-medium text-foreground">Passphrase (optional)</label>
+            <Input
+              type="password"
+              placeholder="Min 8 chars: upper, lower, digit, symbol"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="bg-muted/30 border-border/50"
+              autoComplete="off"
+            />
+            {password.trim() && passwordError(password) && (
+              <p className="text-xs text-destructive">{passwordError(password)}</p>
+            )}
+            <p className="text-xs text-muted-foreground">
+              Recipient will need this to open the note.
+            </p>
+          </div>
         </div>
       )}
 
@@ -212,7 +267,12 @@ export function NoteForm() {
         variant="hero"
         size="lg"
         onClick={handleSubmit}
-        disabled={!content.trim() || content.length > NOTE_MAX_LENGTH || loading}
+        disabled={
+          !content.trim() ||
+          content.length > NOTE_MAX_LENGTH ||
+          (password.trim() !== "" && !isStrongPassword(password)) ||
+          loading
+        }
         className="w-full"
       >
         {loading ? (

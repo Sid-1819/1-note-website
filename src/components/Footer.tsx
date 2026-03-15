@@ -21,24 +21,13 @@ export function Footer() {
             <h4 className="font-display font-semibold text-foreground text-sm mb-3">Product</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><Link to="/features" className="hover:text-foreground transition-colors">Features</Link></li>
-              <li><Link to="/pricing" className="hover:text-foreground transition-colors">Pricing</Link></li>
               <li><Link to="/roadmap" className="hover:text-foreground transition-colors">Roadmap</Link></li>
-              <li><span className="cursor-default">API</span></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-display font-semibold text-foreground text-sm mb-3">Company</h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><span className="cursor-default">About</span></li>
-              <li><span className="cursor-default">Blog</span></li>
-              <li><span className="cursor-default">Careers</span></li>
+              <li><Link to="/docs" className="hover:text-foreground transition-colors">Documentation</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-display font-semibold text-foreground text-sm mb-3">Legal</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><span className="cursor-default">Privacy</span></li>
-              <li><span className="cursor-default">Terms</span></li>
               <li><Link to="/security" className="hover:text-foreground transition-colors">Security</Link></li>
             </ul>
           </div>

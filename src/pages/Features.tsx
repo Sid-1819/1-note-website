@@ -9,6 +9,13 @@ import {
 
 const mainFeatures = [
   {
+    icon: Globe,
+    title: "Use 1Note from your own apps",
+    desc: "REST API — Create and read ephemeral secrets from any stack. No SDK required. Integrate into CI/CD, scripts, or your backend.",
+    details: ["REST API", "Full documentation at /docs", "CI/CD and scripts"],
+    linkTo: "/docs" as const,
+  },
+  {
     icon: Lock,
     title: "Only you and the recipient can read it",
     desc: "Your note is encrypted before it leaves your browser. We never see your content — not even temporarily.",
@@ -35,14 +42,8 @@ const mainFeatures = [
   {
     icon: Key,
     title: "Password-protected notes",
-    desc: "Add an optional password so only someone who has it can open the note. Extra protection when you need it.",
-    details: ["Optional for any note", "Recipient enters passphrase", "Coming soon"],
-  },
-  {
-    icon: Globe,
-    title: "Use 1Note from your own apps",
-    desc: "Integrate secure note sharing into your workflows with a simple API. Build automation and tools on top of 1Note.",
-    details: ["REST API", "Webhooks and integrations", "Coming soon"],
+    desc: "Add an optional passphrase so only someone who has it can open the note. Share the link and passphrase separately for extra protection.",
+    details: ["Optional for any note", "Recipient enters passphrase to unlock", "Wrong attempts rate-limited per link"],
   },
 ];
 
@@ -126,6 +127,11 @@ const Features = () => {
                   </li>
                 ))}
               </ul>
+              {"linkTo" in f && f.linkTo && (
+                <Button variant="outline" size="sm" className="mt-4" asChild>
+                  <Link to={f.linkTo}>View docs</Link>
+                </Button>
+              )}
             </div>
           ))}
         </div>
