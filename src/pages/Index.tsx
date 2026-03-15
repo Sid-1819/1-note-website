@@ -101,7 +101,7 @@ const Index = () => {
           {/* Trust signals + Note creation card */}
           <div
             id="create"
-            className="w-full max-w-xl mx-auto space-y-4 opacity-0 animate-fade-in-up"
+            className="w-full max-w-xl mx-auto space-y-4 opacity-0 animate-fade-in-up scroll-mt-20"
             style={{ animationDelay: "0.4s" }}
           >
             <div className="glass rounded-xl px-4 py-3 flex flex-wrap items-center justify-center gap-6 sm:gap-8 text-sm text-muted-foreground">
@@ -176,7 +176,7 @@ const Index = () => {
             No sign-up required. Create your first secure note in seconds.
           </p>
           <Button variant="hero" size="xl" asChild>
-            <a href="#create">
+            <a href="/">
               Get started free
               <ArrowRight className="w-4 h-4" />
             </a>
