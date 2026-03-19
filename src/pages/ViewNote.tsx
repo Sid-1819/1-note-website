@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { useParams, Link } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -224,27 +225,50 @@ const ViewNote = () => {
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
       <main className="flex-1 flex items-center justify-center px-4 py-20">
-        <div className="relative">
+        <motion.div
+          className="relative"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
           <div className="relative glass glow-card rounded-2xl max-w-md w-full p-8 sm:p-10 space-y-5">
-            <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center mx-auto">
+            <motion.div
+              className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center mx-auto"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.1, duration: 0.3 }}
+            >
               <Lock className="w-7 h-7 text-primary-foreground" />
-            </div>
-            <div className="space-y-4 animate-fade-in">
+            </motion.div>
+            <motion.div
+              className="space-y-4"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.35 }}
+            >
               <pre className="whitespace-pre-wrap rounded-md border bg-muted/50 p-4 text-sm font-mono text-left">
                 {contentToShow}
               </pre>
               <p className="text-muted-foreground text-sm text-center">
                 {randomMessage}
               </p>
-            </div>
-            <Button variant="outline-glow" size="lg" asChild className="w-full transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]">
-              <Link to="/">
-                Back to home
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </Button>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.35 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Button variant="outline-glow" size="lg" asChild className="w-full">
+                <Link to="/">
+                  Back to home
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </Button>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </main>
       <Footer />
     </div>

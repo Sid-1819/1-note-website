@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,16 @@ import {
   Shield, Lock, Eye, Zap, Globe, Timer, Key, FileText,
   ArrowRight, CheckCircle2,
 } from "lucide-react";
+
+const fadeUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] },
+};
+
+const stagger = {
+  animate: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
+};
 
 const mainFeatures = [
   {
@@ -18,8 +29,8 @@ const mainFeatures = [
   {
     icon: Lock,
     title: "Only you and the recipient can read it",
-    desc: "Your note is encrypted before it leaves your browser. We never see your content — not even temporarily.",
-    details: ["Encrypted in transit and at rest", "No plaintext on our servers", "You stay in control"],
+    desc: "Your note is encrypted in transit (HTTPS) and at rest. We never store plain text — only encrypted data.",
+    details: ["Encrypted in transit (HTTPS) and at rest", "No plaintext on our servers", "You stay in control"],
   },
   {
     icon: Eye,
@@ -29,9 +40,9 @@ const mainFeatures = [
   },
   {
     icon: Shield,
-    title: "We can't read your notes — even if asked",
-    desc: "We store only encrypted data. No metadata or IP tracking. Your secrets stay between you and the person with the link.",
-    details: ["No access to your content", "No tracking of who viewed", "Privacy by design"],
+    title: "We store only encrypted data",
+    desc: "Notes are encrypted at rest with AES-256-GCM. No metadata or IP tracking. Your secrets stay between you and the person with the link.",
+    details: ["Encrypted at rest", "No tracking of who viewed", "Privacy by design"],
   },
   {
     icon: Timer,
@@ -60,18 +71,32 @@ const Features = () => {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-20 pb-16 sm:pt-28 sm:pb-20 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-sm text-muted-foreground mb-6 opacity-0 animate-fade-in-up">
+        <motion.div
+          className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-20 pb-16 sm:pt-28 sm:pb-20 text-center"
+          initial="initial"
+          animate="animate"
+          variants={stagger}
+        >
+          <motion.div
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-sm text-muted-foreground mb-6"
+            variants={fadeUp}
+          >
             <Zap className="w-3.5 h-3.5 text-foreground" />
             Enterprise-grade security
-          </div>
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-5 opacity-0 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
+          </motion.div>
+          <motion.h1
+            className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-5"
+            variants={fadeUp}
+          >
             Built for <span className="font-bold">serious security</span>
-          </h1>
-          <p className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto opacity-0 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+          </motion.h1>
+          <motion.p
+            className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto"
+            variants={fadeUp}
+          >
             Every feature is designed with one goal: keeping your sensitive information safe and ephemeral.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </section>
 
       {/* How it works */}
@@ -82,17 +107,29 @@ const Features = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {howItWorks.map((item, i) => (
-              <div key={item.step} className="relative text-center group">
+              <motion.div
+                key={item.step}
+                className="relative text-center group"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.35, delay: i * 0.1 }}
+                whileHover={{ y: -4 }}
+              >
                 {i < howItWorks.length - 1 && (
                   <div className="hidden md:block absolute top-12 left-[60%] w-[80%] h-px border-t border-dashed border-border" />
                 )}
-                <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform duration-300">
+                <motion.div
+                  className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform duration-300"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.98 }}
+                >
                   <item.icon className="w-7 h-7 text-primary-foreground" />
-                </div>
+                </motion.div>
                 <div className="text-xs font-bold text-foreground mb-2 font-display">{item.step}</div>
                 <h3 className="font-display font-semibold text-foreground text-lg mb-2">{item.title}</h3>
                 <p className="text-muted-foreground text-sm">{item.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -100,23 +137,38 @@ const Features = () => {
 
       {/* Feature grid */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-28">
-        <div className="text-center mb-14">
+        <motion.div
+          className="text-center mb-14"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.4 }}
+        >
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">
             Everything you need
           </h2>
           <p className="text-muted-foreground text-lg max-w-lg mx-auto">
             Powerful features, zero complexity. Security shouldn't require a PhD.
           </p>
-        </div>
+        </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {mainFeatures.map((f, i) => (
-            <div
+            <motion.div
               key={f.title}
-              className="glass glow-card rounded-2xl p-6 sm:p-8 group hover:scale-[1.02] transition-all duration-300"
+              className="glass glow-card rounded-2xl p-6 sm:p-8 group"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.35, delay: i * 0.06 }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
             >
-              <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
+              <motion.div
+                className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.98 }}
+              >
                 <f.icon className="w-6 h-6 text-primary-foreground" />
-              </div>
+              </motion.div>
               <h3 className="font-display font-semibold text-foreground text-lg mb-2">{f.title}</h3>
               <p className="text-muted-foreground text-sm leading-relaxed mb-4">{f.desc}</p>
               <ul className="space-y-1.5">
@@ -132,13 +184,19 @@ const Features = () => {
                   <Link to={f.linkTo}>View docs</Link>
                 </Button>
               )}
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
 
       {/* CTA */}
-      <section className="relative overflow-hidden">
+      <motion.section
+        className="relative overflow-hidden"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.45 }}
+      >
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-20 text-center">
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">
             Ready to try it?
@@ -146,14 +204,16 @@ const Features = () => {
           <p className="text-muted-foreground text-lg max-w-md mx-auto mb-8">
             No account required. Start sharing encrypted notes in seconds.
           </p>
-          <Button variant="hero" size="xl" asChild>
-            <Link to="/">
-              Create a secure note
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </Button>
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <Button variant="hero" size="xl" asChild>
+              <Link to="/">
+                Create a secure note
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </Button>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       <Footer />
     </div>

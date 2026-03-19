@@ -1,6 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { Key, Paperclip, Mail, Terminal, KeyRound, Webhook, Users, MapPin } from "lucide-react";
+import { Key, Paperclip, Mail, Terminal, KeyRound, Webhook, Users, MapPin, Shield } from "lucide-react";
 
 const availableNow = [
   { icon: Key, title: "Password-protected notes" },
@@ -13,6 +13,7 @@ const comingSoon = [
 ];
 
 const future = [
+  { icon: Shield, title: "Client-side encryption (zero-knowledge)" },
   { icon: KeyRound, title: "API keys" },
   { icon: Webhook, title: "Webhooks" },
   { icon: Users, title: "Workspace sharing" },
