@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -142,7 +143,12 @@ export function NoteForm() {
 
   if (noteUrl) {
     return (
-      <div className="glass glow-card rounded-2xl p-6 sm:p-8 space-y-5 animate-scale-in">
+      <motion.div
+        className="glass glow-card rounded-2xl p-6 sm:p-8 space-y-5"
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+      >
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-full bg-success/15 flex items-center justify-center">
             <Check className="w-4 h-4 text-success" />
@@ -172,12 +178,17 @@ export function NoteForm() {
         <Button variant="ghost" onClick={handleReset} className="w-full text-muted-foreground">
           <Sparkles className="w-4 h-4 mr-1" /> Create another
         </Button>
-      </div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="glass glow-card rounded-2xl p-6 sm:p-8 space-y-5">
+    <motion.div
+      className="glass glow-card rounded-2xl p-6 sm:p-8 space-y-5"
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       <div className="space-y-1">
         <Textarea
           placeholder="Paste or type your secret…"
@@ -284,9 +295,9 @@ export function NoteForm() {
           <>
             Create secure link
             <ArrowRight className="w-4 h-4" />
-          </>
-        )}
+        </>
+      )}
       </Button>
-    </div>
+    </motion.div>
   );
 }

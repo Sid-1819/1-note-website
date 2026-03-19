@@ -1,17 +1,19 @@
 import { Link } from "react-router-dom";
-import { Lock } from "lucide-react";
+import { useTheme } from "@/components/ThemeProvider";
 
 export function Footer() {
+  const { theme } = useTheme();
   return (
     <footer className="border-t border-border bg-card/30 backdrop-blur-sm">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="flex items-center gap-2 font-display font-bold text-foreground text-lg mb-3">
-              <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-                <Lock className="w-3.5 h-3.5 text-primary-foreground" />
-              </div>
-              1Note
+            <Link to="/" className="flex items-center font-display font-bold text-foreground mb-3">
+              <img
+                src={theme === "dark" ? "/1note-dark.svg" : "/1NOTE-removebg-preview 2.svg"}
+                alt="1Note"
+                className="h-7 w-auto"
+              />
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Share secrets that disappear. Encrypted in transit (HTTPS) and at rest.
