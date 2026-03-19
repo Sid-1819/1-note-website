@@ -14,7 +14,7 @@ export function Footer() {
               1Note
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Share secrets that disappear. Zero-knowledge, end-to-end encrypted note sharing.
+              Share secrets that disappear. Encrypted in transit (HTTPS) and at rest.
             </p>
           </div>
           <div>

@@ -18,8 +18,8 @@ const mainFeatures = [
   {
     icon: Lock,
     title: "Only you and the recipient can read it",
-    desc: "Your note is encrypted before it leaves your browser. We never see your content — not even temporarily.",
-    details: ["Encrypted in transit and at rest", "No plaintext on our servers", "You stay in control"],
+    desc: "Your note is encrypted in transit (HTTPS) and at rest. We never store plain text — only encrypted data.",
+    details: ["Encrypted in transit (HTTPS) and at rest", "No plaintext on our servers", "You stay in control"],
   },
   {
     icon: Eye,
@@ -29,9 +29,9 @@ const mainFeatures = [
   },
   {
     icon: Shield,
-    title: "We can't read your notes — even if asked",
-    desc: "We store only encrypted data. No metadata or IP tracking. Your secrets stay between you and the person with the link.",
-    details: ["No access to your content", "No tracking of who viewed", "Privacy by design"],
+    title: "We store only encrypted data",
+    desc: "Notes are encrypted at rest with AES-256-GCM. No metadata or IP tracking. Your secrets stay between you and the person with the link.",
+    details: ["Encrypted at rest", "No tracking of who viewed", "Privacy by design"],
   },
   {
     icon: Timer,

@@ -7,7 +7,7 @@ const sections = [
     icon: Lock,
     title: "Encryption at rest",
     content:
-      "Notes are encrypted before they are stored. We never store your note in plain text — only encrypted data that we cannot read.",
+      "Notes are encrypted in transit (HTTPS) and at rest. We never store your note in plain text — only encrypted data that we cannot read.",
   },
   {
     icon: Trash2,

@@ -67,7 +67,7 @@ const faqs = [
   },
   {
     q: "Is my data really secure?",
-    a: "Absolutely. Notes are encrypted client-side before being sent to our servers. We use AES-256-GCM encryption and a zero-knowledge architecture.",
+    a: "Absolutely. Notes are encrypted in transit (HTTPS) and at rest. We use AES-256-GCM for storage and never store plain text.",
   },
   {
     q: "What happens when a note expires?",

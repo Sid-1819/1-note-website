@@ -20,9 +20,9 @@ const howItWorksSteps = [
 ];
 
 const features = [
-  { icon: Shield, title: "End-to-end encrypted", desc: "Your notes are encrypted and never stored in plain text." },
+  { icon: Shield, title: "Encrypted in transit and at rest", desc: "Your notes are protected by HTTPS in transit and AES-256-GCM at rest. We never store plain text." },
   { icon: Eye, title: "Self-destructing", desc: "Notes expire after a set time or number of views." },
-  { icon: Lock, title: "Zero knowledge", desc: "We can't read your notes. Only the link holder can." },
+  { icon: Lock, title: "Private by design", desc: "Only the link holder (and optional passphrase) can read your note." },
 ];
 
 const valueBullets = [
