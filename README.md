@@ -1,74 +1,77 @@
-# Welcome to your Lovable project
+# 1Note
 
-## Project info
+Secure, ephemeral secret sharing for your apps. One API to create and consume one-time secrets — for devs, backend teams, and CI. Or use the web UI to share a note in seconds with no account required.
 
+## Features
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+- **Encrypted** — Notes are protected by HTTPS in transit and AES-256-GCM at rest. Plain text is never stored.
+- **Self-destructing** — Notes expire after a set time or number of views.
+- **Private by design** — Only the link holder (and optional passphrase) can read a note.
+- **No signup** — Create and share without an account.
+- **API-first** — REST API for creating and consuming secrets from your apps.
 
-## How can I edit this code?
+## How it works
 
-There are several ways of editing your application.
+1. **Write a note** — Paste or type your secret.
+2. **Share the link** — Get a unique link and send it to the recipient.
+3. **Gone after viewing** — The note appears once, then is destroyed.
 
-**Use Lovable**
+## Tech stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- [Vite](https://vitejs.dev/) — Build tool
+- [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/)
+- [React Router](https://reactrouter.com/) — Routing
+- [TanStack Query](https://tanstack.com/query) — Data fetching
+- [Framer Motion](https://www.framer.com/motion/) — Animations
 
-Changes made via Lovable will be committed automatically to this repo.
+## Getting started
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+**Requirements:** Node.js and npm (or [pnpm](https://pnpm.io/) — this project uses `pnpm-lock.yaml`).
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# Clone the repository
 git clone <YOUR_GIT_URL>
+cd secret-share
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Install dependencies
+pnpm install
+# or: npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+# Start the development server
+pnpm dev
+# or: npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Backend / API
 
-**Use GitHub Codespaces**
+The app expects a backend API. Set `VITE_API_URL` to your API base URL (e.g. in `.env`):
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```env
+VITE_API_URL=https://your-api.example.com
+```
 
-## What technologies are used for this project?
+If unset, requests go to the same origin (relative URLs).
 
-This project is built with:
+## Scripts
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+| Command        | Description                    |
+|----------------|--------------------------------|
+| `pnpm dev`     | Start dev server with HMR      |
+| `pnpm build`   | Production build               |
+| `pnpm preview` | Preview production build       |
+| `pnpm lint`    | Run ESLint                     |
+| `pnpm test`    | Run tests (Vitest)             |
 
-## How can I deploy this project?
+## Project structure
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+- `src/pages/` — Route pages (Index, Features, Docs, Security, Roadmap, ViewNote)
+- `src/components/` — Reusable UI (Navbar, Footer, NoteForm) and shadcn components
+- `src/lib/` — API client (`api.ts`), utilities
+- `/s/:slug` — View a shared note (one-time reveal)
 
-## Can I connect a custom domain to my Lovable project?
+## License
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Private — see repository settings.
