@@ -5,7 +5,7 @@ import { NoteForm } from "@/components/NoteForm";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import {
-  Shield, Lock, Eye, ArrowRight, Zap, FileText, Key, Trash2, UserX, Code2,
+  Shield, Lock, ArrowRight, Zap, FileText, Key, Trash2, UserX, Code2,
 } from "lucide-react";
 
 const fadeUp = {
@@ -32,16 +32,18 @@ const howItWorksSteps = [
   { step: "03", title: "Gone after viewing", desc: "The note appears once, then disappears forever.", icon: Shield },
 ];
 
-const features = [
-  { icon: Shield, title: "Encrypted in transit and at rest", desc: "Your notes are protected by HTTPS in transit and AES-256-GCM at rest. We never store plain text." },
-  { icon: Eye, title: "Self-destructing", desc: "Notes expire after a set time or number of views." },
-  { icon: Lock, title: "Private by design", desc: "Only the link holder (and optional passphrase) can read your note." },
-];
+// Feature cards commented out; CTA to /features used instead
+// const features = [
+//   { icon: Shield, title: "Encrypted in transit and at rest", desc: "..." },
+//   { icon: Eye, title: "Self-destructing", desc: "..." },
+//   { icon: Lock, title: "Private by design", desc: "..." },
+// ];
 
 const valueBullets = [
   { icon: UserX, label: "No signup" },
   { icon: Lock, label: "Encrypted" },
-  { icon: Code2, label: "REST API" },
+  // { icon: Code2, label: "REST API" },
+  { icon: Shield, label: "Privacy-first" },
   { icon: Trash2, label: "Self-destructing" },
 ];
 
@@ -91,8 +93,8 @@ const Index = () => {
               variants={fadeUp}
             >
               <Button variant="hero" size="xl" asChild>
-                <Link to="/docs">
-                  Read the docs
+                <Link to="/features">
+                  Explore features
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
@@ -188,10 +190,10 @@ const Index = () => {
         </div>
       </motion.section>
 
-      {/* Features preview */}
+      {/* Replacing feature cards with a single CTA to features page */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-28">
         <motion.div
-          className="text-center mb-14"
+          className="text-center max-w-2xl mx-auto"
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -200,40 +202,9 @@ const Index = () => {
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">
             Security without complexity
           </h2>
-          <p className="text-muted-foreground text-lg max-w-lg mx-auto">
+          <p className="text-muted-foreground text-lg max-w-lg mx-auto mb-8">
             Everything you need to share sensitive information safely. Nothing you don't.
           </p>
-        </motion.div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {features.map((f, i) => (
-            <motion.div
-              key={f.title}
-              className="glass glow-card rounded-2xl p-6 sm:p-8 group"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.35, delay: i * 0.08 }}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
-            >
-              <motion.div
-                className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <f.icon className="w-6 h-6 text-primary-foreground" />
-              </motion.div>
-              <h3 className="font-display font-semibold text-foreground text-lg mb-2">{f.title}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">{f.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-        <motion.div
-          className="text-center mt-10"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-        >
           <Button variant="outline-glow" size="lg" asChild>
             <Link to="/features">
               Explore all features
@@ -241,6 +212,15 @@ const Index = () => {
             </Link>
           </Button>
         </motion.div>
+        {/* Feature cards section commented out
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {features.map((f, i) => (
+            <motion.div key={f.title} className="glass glow-card rounded-2xl p-6 sm:p-8 group" ...>
+              ...
+            </motion.div>
+          ))}
+        </div>
+        */}
       </section>
 
       {/* CTA */}

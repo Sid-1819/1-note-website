@@ -22,8 +22,10 @@ const mainFeatures = [
   {
     icon: Globe,
     title: "Use 1Note from your own apps",
-    desc: "REST API — Create and read ephemeral secrets from any stack. No SDK required. Integrate into CI/CD, scripts, or your backend.",
-    details: ["REST API", "Full documentation at /docs", "CI/CD and scripts"],
+    // desc: "REST API — Create and read ephemeral secrets from any stack. No SDK required. Integrate into CI/CD, scripts, or your backend.",
+    desc: "Integrate secure secret sharing into your workflow. Works seamlessly with any application stack, CI/CD pipelines, and automation scripts.",
+    // details: ["REST API", "Full documentation at /docs", "CI/CD and scripts"],
+    details: ["Easy integration", "Works with any stack", "CI/CD and scripts"],
     linkTo: "/docs" as const,
   },
   {

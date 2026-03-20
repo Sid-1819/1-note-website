@@ -24,7 +24,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><Link to="/features" className="hover:text-foreground transition-colors">Features</Link></li>
               <li><Link to="/roadmap" className="hover:text-foreground transition-colors">Roadmap</Link></li>
-              <li><Link to="/docs" className="hover:text-foreground transition-colors">Documentation</Link></li>
+              {/* <li><Link to="/docs" className="hover:text-foreground transition-colors">Documentation</Link></li> */}
             </ul>
           </div>
           <div>

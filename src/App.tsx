@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation, useOutlet } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import Features from "./pages/Features";
 import Docs from "./pages/Docs";
@@ -36,6 +37,7 @@ function AnimatedLayout() {
 
 const App = () => (
   <BrowserRouter>
+    <ScrollToTop />
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
