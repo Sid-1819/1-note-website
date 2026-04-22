@@ -52,7 +52,6 @@ export function FeedbackSideTab() {
             </SheetDescription>
           </SheetHeader>
           <Textarea
-            className="min-h-[140px] flex-1 resize-none"
             placeholder="Your thoughts…"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
@@ -62,7 +61,7 @@ export function FeedbackSideTab() {
               Cancel
             </Button>
             <Button type="button" onClick={openMail}>
-              Continue in email
+              Submit
             </Button>
           </SheetFooter>
         </SheetContent>
