@@ -1,10 +1,11 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useLayoutEffect, useState, type MouseEvent } from "react";
+import { flushSync } from "react-dom";
 
 type Theme = "light" | "dark";
 
 const ThemeContext = createContext<{
   theme: Theme;
-  toggleTheme: () => void;
+  toggleTheme: (event?: MouseEvent<HTMLElement>) => void;
 }>({ theme: "dark", toggleTheme: () => {} });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
@@ -15,14 +16,31 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     return "dark";
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const root = document.documentElement;
     root.classList.remove("light", "dark");
     root.classList.add(theme);
     localStorage.setItem("1note-theme", theme);
   }, [theme]);
 
-  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
+  const toggleTheme = useCallback((event?: MouseEvent<HTMLElement>) => {
+    const cx = event?.clientX ?? window.innerWidth / 2;
+    const cy = event?.clientY ?? window.innerHeight / 2;
+    document.documentElement.style.setProperty("--vt-anchor-x", `${cx}px`);
+    document.documentElement.style.setProperty("--vt-anchor-y", `${cy}px`);
+
+    const switchTheme = () => {
+      flushSync(() => {
+        setTheme((t) => (t === "dark" ? "light" : "dark"));
+      });
+    };
+
+    if (typeof document.startViewTransition === "function") {
+      document.startViewTransition(switchTheme);
+    } else {
+      switchTheme();
+    }
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>

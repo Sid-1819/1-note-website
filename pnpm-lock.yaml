@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@1note/sdk':
+        specifier: file:../1note-sdk/packages/sdk
+        version: file:../1note-sdk/packages/sdk
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.71.2(react@18.3.1))
@@ -227,6 +230,9 @@ importers:
         version: 3.2.4(@types/node@22.19.15)(jsdom@20.0.3)
 
 packages:
+
+  '@1note/sdk@file:../1note-sdk/packages/sdk':
+    resolution: {directory: ../1note-sdk/packages/sdk, type: directory}
 
   '@adobe/css-tools@4.4.4':
     resolution: {integrity: sha512-Elp+iwUx5rN5+Y8xLt5/GRoG20WGoDCQ/1Fb+1LiGtvwbDavuSk0jhD/eZdckHAuzcDzccnkv+rEjyWfRx18gg==}
@@ -3342,6 +3348,8 @@ packages:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
 snapshots:
+
+  '@1note/sdk@file:../1note-sdk/packages/sdk': {}
 
   '@adobe/css-tools@4.4.4': {}
 

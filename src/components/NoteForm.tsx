@@ -6,8 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Check, Copy, ChevronDown, ChevronUp, Loader2, AlertCircle, ArrowRight, Sparkles } from "lucide-react";
 import { toast } from "sonner";
-
-const API_BASE = import.meta.env.VITE_API_URL || "";
+import { ApiError, oneNote } from "@/lib/api";
 const NOTE_MAX_LENGTH = 100;
 
 const DEFAULT_MAX_VIEWS = "1";
@@ -82,42 +81,26 @@ export function NoteForm() {
     setLoading(true);
     setError("");
 
-    const body: Record<string, unknown> = {
+    const payload = {
       content,
       expiresAt: getExpiryDate(expiry),
       maxViews: Number(maxViews),
+      ...(password.trim() ? { password: password.trim() } : {}),
     };
-    if (password.trim()) {
-      body.password = password.trim();
-    }
 
     try {
-      const res = await fetch(`${API_BASE}/s`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-
-      if (!res.ok) {
-        const text = await res.text().catch(() => "");
-        if (res.status === 429) {
-          let msg = "Too many notes created. Limit: 3 per minute, 10 per 24 hours. Try again later.";
-          try {
-            const body = JSON.parse(text);
-            if (body?.message) msg = body.message;
-          } catch {
-            if (text) msg = text;
-          }
-          throw new Error(msg);
-        }
-        throw new Error(text || "Something went wrong. Please try again.");
-      }
-
-      const data = await res.json();
+      const data = await oneNote.createNote(payload);
       setNoteUrl(data.url ?? `${window.location.origin}/s/${data.slug}`);
       setCreatedWithPassword(Boolean(password.trim()));
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Something went wrong.");
+      if (e instanceof ApiError && e.status === 429) {
+        setError(
+          e.message ||
+            "Too many notes created. Limit: 3 per minute, 10 per 24 hours. Try again later.",
+        );
+      } else {
+        setError(e instanceof Error ? e.message : "Something went wrong.");
+      }
     } finally {
       setLoading(false);
     }

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
+import { FeedbackSideTab } from "@/components/FeedbackSideTab";
 import { Footer } from "@/components/Footer";
 import { NoteForm } from "@/components/NoteForm";
 import { Button } from "@/components/ui/button";
@@ -50,6 +51,7 @@ const valueBullets = [
 const Index = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <FeedbackSideTab />
       <Navbar />
 
       {/* Hero Section */}

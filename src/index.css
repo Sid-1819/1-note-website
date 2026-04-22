@@ -101,6 +101,31 @@
   }
 }
 
+/* Theme toggle: circular reveal from the toggle click (View Transitions API) */
+@supports (view-transition-name: none) {
+  ::view-transition-new(root) {
+    z-index: 1;
+    animation: theme-vt-reveal-in 0.42s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+}
+
+@keyframes theme-vt-reveal-in {
+  from {
+    clip-path: circle(0px at var(--vt-anchor-x, 50%) var(--vt-anchor-y, 50%));
+  }
+  to {
+    clip-path: circle(150vmax at var(--vt-anchor-x, 50%) var(--vt-anchor-y, 50%));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @supports (view-transition-name: none) {
+    ::view-transition-new(root) {
+      animation-duration: 0.01ms !important;
+    }
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
