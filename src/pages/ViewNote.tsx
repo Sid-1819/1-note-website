@@ -195,7 +195,7 @@ const ViewNote = () => {
 
   if (isError && !needPassword) {
     return (
-      <div className="min-h-screen bg-background flex flex-col">
+      <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-1 flex items-center justify-center px-4 py-20">
           <div className="relative max-w-md w-full space-y-4">

@@ -1,9 +1,11 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
-import { Sun, Moon, Menu, X } from "lucide-react";
+import { Sun, Moon, Menu, X, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/ThemeProvider";
 import { useState } from "react";
+
+const GITHUB_REPO_URL = "https://github.com/Sid-1819/1-note-website";
 
 const navLinks = [
   { label: "Home", to: "/" },
@@ -11,6 +13,23 @@ const navLinks = [
   // { label: "Docs", to: "/docs" },
   { label: "Security", to: "/security" },
 ];
+
+function GitHubRepoButton() {
+  return (
+    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <Button variant="ghost" size="icon" asChild className="rounded-lg">
+        <a
+          href={GITHUB_REPO_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="View repository on GitHub"
+        >
+          <Github className="w-4 h-4" />
+        </a>
+      </Button>
+    </motion.div>
+  );
+}
 
 export function Navbar() {
   const { theme, toggleTheme } = useTheme();
@@ -49,8 +68,9 @@ export function Navbar() {
         </nav>
 
         <div className="hidden md:flex items-center gap-2">
+          <GitHubRepoButton />
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button variant="ghost" size="icon" onClick={toggleTheme} className="rounded-lg">
+            <Button variant="ghost" size="icon" onClick={(e) => toggleTheme(e)} className="rounded-lg">
             {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </Button>
           </motion.div>
@@ -58,7 +78,8 @@ export function Navbar() {
 
         {/* Mobile toggle */}
         <div className="flex md:hidden items-center gap-2">
-          <Button variant="ghost" size="icon" onClick={toggleTheme} className="rounded-lg">
+          <GitHubRepoButton />
+          <Button variant="ghost" size="icon" onClick={(e) => toggleTheme(e)} className="rounded-lg">
             {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </Button>
           <Button variant="ghost" size="icon" onClick={() => setMobileOpen(!mobileOpen)}>
