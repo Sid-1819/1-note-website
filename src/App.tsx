@@ -13,6 +13,7 @@ import Security from "./pages/Security";
 import Roadmap from "./pages/Roadmap";
 import ViewNote from "./pages/ViewNote";
 import NotFound from "./pages/NotFound";
+import EncatchFeedback from "./components/EncatchFeedback";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ const App = () => (
     <ScrollToTop />
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
+        <EncatchFeedback/>
         <TooltipProvider>
           <Toaster />
           <Sonner />

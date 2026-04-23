@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { _encatch } from "@encatch/web-sdk";
 
 const FEEDBACK_EMAIL = import.meta.env.VITE_FEEDBACK_EMAIL as string | undefined;
 
@@ -28,11 +29,15 @@ export function FeedbackSideTab() {
     setMessage("");
   };
 
+  const openEncatch = () => {
+    _encatch.showForm(import.meta.env.VITE_ENCATCH_FORM_ID);
+  };
+
   return (
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={openEncatch}
         className="fixed right-0 top-1/2 z-50 flex -translate-y-1/2 flex-col items-center gap-3 rounded-l-xl border-y border-l border-border border-r-0 bg-primary py-5 pl-2.5 pr-1 text-primary-foreground shadow-md transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         aria-label="Give feedback"
       >

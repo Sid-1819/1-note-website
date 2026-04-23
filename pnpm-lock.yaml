@@ -11,6 +11,9 @@ importers:
       '@1note/sdk':
         specifier: 0.0.3
         version: 0.0.3
+      '@encatch/web-sdk':
+        specifier: 1.1.0-beta.8
+        version: 1.1.0-beta.8
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.71.2(react@18.3.1))
@@ -262,6 +265,10 @@ packages:
 
   '@emnapi/runtime@1.9.0':
     resolution: {integrity: sha512-QN75eB0IH2ywSpRpNddCRfQIhmJYBCJ1x5Lb3IscKAL8bMnVAKnRg8dCoXbHzVLLH7P38N2Z3mtulB7W0J0FKw==}
+
+  '@encatch/web-sdk@1.1.0-beta.8':
+    resolution: {integrity: sha512-cYsfC9q7qAZpKkHEJvjLkmUfG4g7zWNQ3FezA0RNRB1+IC23Mkc9Lv9NurmDXf9ANSB5XFm2fslBcx84cM0EQQ==}
+    engines: {node: '>=18'}
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -3468,6 +3475,8 @@ snapshots:
     dependencies:
       tslib: 2.8.1
     optional: true
+
+  '@encatch/web-sdk@1.1.0-beta.8': {}
 
   '@esbuild/aix-ppc64@0.21.5':
     optional: true
