@@ -1,31 +1,31 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { Lock, Trash2, SearchX, FileText } from "lucide-react";
+import { Lock, Trash2, SearchX, Fingerprint } from "lucide-react";
 
 const sections = [
   {
     icon: Lock,
     title: "Encryption at rest",
     content:
-      "Notes are encrypted in transit (HTTPS) and at rest. We never store your note in plain text — only encrypted data that we cannot read.",
+      "Secret payloads are encrypted in transit (HTTPS) and at rest. We do not keep plaintext on disk — only encrypted material until the link is consumed or expires. Optional passphrases add another gate before reveal.",
   },
   {
     icon: Trash2,
     title: "Automatic deletion",
     content:
-      "Notes are removed automatically after they are viewed or when they expire. We do not keep copies. There is no long-term retention of your content.",
+      "Encrypted payloads are removed after they are consumed (per your view limits) or when they expire. We do not retain copies for browsing or “version history.” By design there is no long-term archive of the secret itself.",
   },
   {
     icon: SearchX,
     title: "No search engine indexing",
     content:
-      "Note reveal pages are excluded from search engine indexing. We use noindex directives so that shared links do not appear in search results.",
+      "Pages that reveal a secret are excluded from search engine indexing. We use noindex directives so one-time URLs are not meant to surface in public search results.",
   },
   {
-    icon: FileText,
+    icon: Fingerprint,
     title: "Minimal logging",
     content:
-      "We log only what is necessary for reliability and abuse prevention. We do not log note content, and we avoid collecting unnecessary personal data.",
+      "We log only what is necessary for reliability and abuse prevention. We do not log secret body content, and we avoid collecting personal data beyond what operating a secure handoff requires.",
   },
 ];
 
@@ -40,7 +40,7 @@ const Security = () => {
             Security &amp; Privacy
           </h1>
           <p className="text-muted-foreground text-lg mb-12">
-            How we keep your notes safe and your data minimal.
+            How we protect one-time secret handoffs and keep collected data to a minimum.
           </p>
 
           <div className="space-y-10">

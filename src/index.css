@@ -413,12 +413,42 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(hsl(var(--foreground) / 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, hsl(var(--foreground) / 0.03) 1px, transparent 1px);
-  background-size: 48px 48px;
+    linear-gradient(hsl(var(--foreground) / 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--foreground) / 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 20%, transparent 70%);
   -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 20%, transparent 70%);
   animation: hero-grid-drift 25s linear infinite;
+}
+
+/* Subtle “vault” vignette + scan hint on hero */
+.hero-bg-secure-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 100% 80% at 50% -20%, hsl(var(--primary) / 0.07), transparent 55%),
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      hsl(var(--background) / 0.35) 100%
+    );
+  pointer-events: none;
+}
+
+.hero-bg-secure-vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    hsl(var(--foreground) / 0.012) 3px,
+    hsl(var(--foreground) / 0.012) 4px
+  );
+  mask-image: radial-gradient(ellipse 70% 55% at 50% 15%, black 15%, transparent 65%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 15%, black 15%, transparent 65%);
+  pointer-events: none;
 }
 
 .hero-bg-orb {
@@ -432,7 +462,7 @@
 .hero-bg-orb-1 {
   width: 400px;
   height: 400px;
-  background: hsl(var(--foreground) / 0.4);
+  background: hsl(var(--primary) / 0.45);
   top: -15%;
   left: -10%;
   animation-delay: 0s;
@@ -441,7 +471,7 @@
 .hero-bg-orb-2 {
   width: 320px;
   height: 320px;
-  background: hsl(var(--foreground) / 0.3);
+  background: hsl(var(--foreground) / 0.28);
   top: 10%;
   right: -5%;
   animation-delay: -7s;
@@ -450,7 +480,7 @@
 .hero-bg-orb-3 {
   width: 280px;
   height: 280px;
-  background: hsl(var(--foreground) / 0.25);
+  background: hsl(var(--primary) / 0.3);
   bottom: -20%;
   left: 30%;
   animation-delay: -14s;
