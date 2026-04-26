@@ -42,9 +42,9 @@ export function Navbar() {
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Link to="/" className="flex items-center gap-2.5 font-display font-bold text-foreground">
             <img
-              src={theme === "dark" ? "/1note-dark.svg" : "/1NOTE-removebg-preview 2.svg"}
-              alt="1Note"
-              className="h-8 w-auto"
+              src={theme === "dark" ? "/GET_SECRET-DARK-removebg-preview.svg" : "/GET_SECRET-removebg-preview.svg"}
+              alt="Get Secret"
+              className="h-12 w-auto"
             />
           </Link>
         </motion.div>

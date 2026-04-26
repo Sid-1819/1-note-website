@@ -96,7 +96,7 @@ export function NoteForm() {
       if (e instanceof ApiError && e.status === 429) {
         setError(
           e.message ||
-            "Too many notes created. Limit: 3 per minute, 10 per 24 hours. Try again later.",
+            "Too many secrets created. Limit: 3 per minute, 10 per 24 hours. Try again later.",
         );
       } else {
         setError(e instanceof Error ? e.message : "Something went wrong.");
@@ -109,7 +109,7 @@ export function NoteForm() {
   const handleCopy = async () => {
     await navigator.clipboard.writeText(noteUrl);
     setCopied(true);
-    toast.success("Link copied to clipboard");
+    toast.success("Secret link copied");
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -136,7 +136,7 @@ export function NoteForm() {
           <div className="w-8 h-8 rounded-full bg-success/15 flex items-center justify-center">
             <Check className="w-4 h-4 text-success" />
           </div>
-          <span className="font-display font-semibold text-foreground">Your secure link is ready</span>
+          <span className="font-display font-semibold text-foreground">Your one-time secret link is ready</span>
         </div>
         <div className="flex gap-2">
           <Input
@@ -159,7 +159,7 @@ export function NoteForm() {
             : "This link will self-destruct after it's been viewed. Share it only with the intended recipient."}
         </p>
         <Button variant="ghost" onClick={handleReset} className="w-full text-muted-foreground">
-          <Sparkles className="w-4 h-4 mr-1" /> Create another
+          <Sparkles className="w-4 h-4 mr-1" /> Share another secret
         </Button>
       </motion.div>
     );
@@ -185,7 +185,7 @@ export function NoteForm() {
           {content.length}/{NOTE_MAX_LENGTH}
         </p>
         <p className="text-xs text-muted-foreground">
-          Limit: 3 notes per minute, 10 per day per device.
+          Limit: 3 sealed links per minute, 10 per day per device (abuse protection).
         </p>
       </div>
 
@@ -244,7 +244,7 @@ export function NoteForm() {
               <p className="text-xs text-destructive">{passwordError(password)}</p>
             )}
             <p className="text-xs text-muted-foreground">
-              Recipient will need this to open the note.
+              Recipient will need this to unlock the secret.
             </p>
           </div>
         </div>
@@ -272,11 +272,11 @@ export function NoteForm() {
         {loading ? (
           <>
             <Loader2 className="w-4 h-4 animate-spin" />
-            Creating…
+            Sealing…
           </>
         ) : (
           <>
-            Create secure link
+            Create one-time secret link
             <ArrowRight className="w-4 h-4" />
         </>
       )}

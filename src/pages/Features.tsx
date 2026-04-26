@@ -4,8 +4,8 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import {
-  Shield, Lock, Eye, Zap, Globe, Timer, Key, FileText,
-  ArrowRight, CheckCircle2,
+  Shield, Lock, Eye, Globe, Timer, Key,
+  ArrowRight, CheckCircle2, ShieldCheck, Link2,
 } from "lucide-react";
 
 const fadeUp = {
@@ -21,49 +21,62 @@ const stagger = {
 const mainFeatures = [
   {
     icon: Globe,
-    title: "Use 1Note from your own apps",
-    // desc: "REST API — Create and read ephemeral secrets from any stack. No SDK required. Integrate into CI/CD, scripts, or your backend.",
-    desc: "Integrate secure secret sharing into your workflow. Works seamlessly with any application stack, CI/CD pipelines, and automation scripts.",
-    // details: ["REST API", "Full documentation at /docs", "CI/CD and scripts"],
-    details: ["Easy integration", "Works with any stack", "CI/CD and scripts"],
+    title: "Automation & backends",
+    desc: "Create and consume one-time secret links from your services, CI jobs, and scripts — same security model as the web handoff, without manual copy-paste.",
+    details: ["REST-friendly flows", "Works with any stack", "Ideal for runbooks and pipelines"],
     linkTo: "/docs" as const,
   },
   {
     icon: Lock,
-    title: "Only you and the recipient can read it",
-    desc: "Your note is encrypted in transit (HTTPS) and at rest. We never store plain text — only encrypted data.",
-    details: ["Encrypted in transit (HTTPS) and at rest", "No plaintext on our servers", "You stay in control"],
+    title: "Ciphertext only at rest",
+    desc: "Secrets are protected in transit (HTTPS) and stored as encrypted blobs. We do not persist your payload in plain text.",
+    details: ["TLS to the API and web UI", "No plaintext on disk", "You control who receives the link"],
   },
   {
     icon: Eye,
-    title: "Your note vanishes after viewing",
-    desc: "Open the link once and the note is gone. No trace left behind. You choose: one view, a few views, or a time limit.",
-    details: ["One-time or limited views", "Time-based expiry", "Automatic deletion"],
+    title: "One-time or capped disclosure",
+    desc: "Open the link and the secret is revealed within the limits you set — then the ciphertext is removed. No inbox history, no long-lived copy in chat.",
+    details: ["Single-use or limited views", "Time-boxed TTL", "Automatic purge after consumption"],
   },
   {
     icon: Shield,
-    title: "We store only encrypted data",
-    desc: "Notes are encrypted at rest with AES-256-GCM. No metadata or IP tracking. Your secrets stay between you and the person with the link.",
-    details: ["Encrypted at rest", "No tracking of who viewed", "Privacy by design"],
+    title: "AES-256-GCM at rest",
+    desc: "Payloads are encrypted at rest with modern AEAD. Designed so a casual “note app” is not what you are trusting — a secret handoff channel is.",
+    details: ["Industry-standard algorithms", "No voyeur analytics on content", "Privacy-first defaults"],
   },
   {
     icon: Timer,
-    title: "You choose when it disappears",
-    desc: "Set how long the note lasts: minutes, hours, or days. Or cap it by number of views. You're in control.",
-    details: ["Quick expiry presets", "Custom duration", "View-based limits"],
+    title: "You set the blast radius",
+    desc: "Tight expiry and low view counts shrink the window where a leaked URL still matters. Defaults favor short-lived secrets, not permanent pages.",
+    details: ["Short TTL presets", "Expiry + view limits together", "Predictable lifecycle"],
   },
   {
     icon: Key,
-    title: "Password-protected notes",
-    desc: "Add an optional passphrase so only someone who has it can open the note. Share the link and passphrase separately for extra protection.",
-    details: ["Optional for any note", "Recipient enters passphrase to unlock", "Wrong attempts rate-limited per link"],
+    title: "Optional passphrase",
+    desc: "Add a strong passphrase so possession of the URL alone is not enough. Share the link and the secret out-of-band for defense in depth.",
+    details: ["Optional on any link", "Unlock before reveal", "Rate-limited guess attempts per link"],
   },
 ];
 
 const howItWorks = [
-  { step: "01", title: "Write a note", desc: "Paste or type your secret in the box.", icon: FileText },
-  { step: "02", title: "Share the link", desc: "Get a unique link and send it to the person you want.", icon: Key },
-  { step: "03", title: "Gone after viewing", desc: "The note appears once, then disappears forever.", icon: Shield },
+  {
+    step: "01",
+    title: "Seal the payload",
+    desc: "Paste credentials, keys, or sensitive text. We store ciphertext only — never plain text on disk.",
+    icon: Lock,
+  },
+  {
+    step: "02",
+    title: "Send one link",
+    desc: "Share a single URL with view limits and expiry — not the raw secret in email or Slack.",
+    icon: Link2,
+  },
+  {
+    step: "03",
+    title: "Gone for good",
+    desc: "After the last allowed view or when time runs out, the secret is deleted. No archive, no recovery.",
+    icon: ShieldCheck,
+  },
 ];
 
 const Features = () => {
@@ -80,23 +93,23 @@ const Features = () => {
           variants={stagger}
         >
           <motion.div
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-sm text-muted-foreground mb-6"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-sm text-muted-foreground mb-6 border border-primary/15"
             variants={fadeUp}
           >
-            <Zap className="w-3.5 h-3.5 text-foreground" />
-            Enterprise-grade security
+            <Shield className="w-3.5 h-3.5 text-primary shrink-0" />
+            One-time links · encrypted at rest
           </motion.div>
           <motion.h1
             className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-5"
             variants={fadeUp}
           >
-            Built for <span className="font-bold">serious security</span>
+            Built for <span className="text-primary">secret handoffs</span>
           </motion.h1>
           <motion.p
             className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto"
             variants={fadeUp}
           >
-            Every feature is designed with one goal: keeping your sensitive information safe and ephemeral.
+            Every capability exists to move passwords, keys, and confidential payloads through a short-lived, encrypted channel — not to host permanent “notes.”
           </motion.p>
         </motion.div>
       </section>
@@ -105,7 +118,7 @@ const Features = () => {
       <section className="border-y border-border bg-card/30 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
           <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground text-center mb-14">
-            How it works
+            How secret sharing works
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {howItWorks.map((item, i) => (
@@ -147,10 +160,10 @@ const Features = () => {
           transition={{ duration: 0.4 }}
         >
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">
-            Everything you need
+            Everything for safer disclosure
           </h2>
           <p className="text-muted-foreground text-lg max-w-lg mx-auto">
-            Powerful features, zero complexity. Security shouldn't require a PhD.
+            Strong defaults for ephemeral secrets — without turning your team into cryptographers.
           </p>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -176,16 +189,16 @@ const Features = () => {
               <ul className="space-y-1.5">
                 {f.details.map((d) => (
                   <li key={d} className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-foreground shrink-0" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
                     {d}
                   </li>
                 ))}
               </ul>
-              {"linkTo" in f && f.linkTo && (
+              {/* {"linkTo" in f && f.linkTo && (
                 <Button variant="outline" size="sm" className="mt-4" asChild>
                   <Link to={f.linkTo}>View docs</Link>
                 </Button>
-              )}
+              )} */}
             </motion.div>
           ))}
         </div>
@@ -204,12 +217,12 @@ const Features = () => {
             Ready to try it?
           </h2>
           <p className="text-muted-foreground text-lg max-w-md mx-auto mb-8">
-            No account required. Start sharing encrypted notes in seconds.
+            No account required. Seal a one-time secret link from the home page in seconds.
           </p>
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Button variant="hero" size="xl" asChild>
-              <Link to="/">
-                Create a secure note
+              <Link to="/#create">
+                Create a secret link
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>

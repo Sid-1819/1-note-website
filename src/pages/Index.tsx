@@ -6,7 +6,7 @@ import { NoteForm } from "@/components/NoteForm";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import {
-  Shield, Lock, ArrowRight, Zap, FileText, Key, Trash2, UserX, Code2,
+  Shield, Lock, ArrowRight, Trash2, UserX, ShieldCheck, Link2,
 } from "lucide-react";
 
 const fadeUp = {
@@ -22,15 +22,30 @@ const stagger = {
 };
 
 const trustSignals = [
-  { icon: Lock, label: "Encrypted at rest" },
-  { icon: UserX, label: "No account required" },
-  { icon: Trash2, label: "Automatic destruction" },
+  { icon: Lock, label: "AES-256-GCM at rest" },
+  { icon: UserX, label: "No accounts · no inbox" },
+  { icon: Trash2, label: "Purged after access or TTL" },
 ];
 
 const howItWorksSteps = [
-  { step: "01", title: "Write a note", desc: "Paste or type your secret in the box.", icon: FileText },
-  { step: "02", title: "Share the link", desc: "Get a unique link and send it to the person you want.", icon: Key },
-  { step: "03", title: "Gone after viewing", desc: "The note appears once, then disappears forever.", icon: Shield },
+  {
+    step: "01",
+    title: "Seal the payload",
+    desc: "Paste credentials, API keys, or any sensitive text. We store ciphertext only — never plain text on disk.",
+    icon: Lock,
+  },
+  {
+    step: "02",
+    title: "Send one link",
+    desc: "Share a single URL with view limits and expiry. No Slack or email trail carrying the secret itself.",
+    icon: Link2,
+  },
+  {
+    step: "03",
+    title: "Gone for good",
+    desc: "After the last allowed view or when time runs out, the secret is deleted. No archive, no recovery.",
+    icon: ShieldCheck,
+  },
 ];
 
 // Feature cards commented out; CTA to /features used instead
@@ -42,10 +57,9 @@ const howItWorksSteps = [
 
 const valueBullets = [
   { icon: UserX, label: "No signup" },
-  { icon: Lock, label: "Encrypted" },
-  // { icon: Code2, label: "REST API" },
-  { icon: Shield, label: "Privacy-first" },
-  { icon: Trash2, label: "Self-destructing" },
+  { icon: Lock, label: "Encrypted payloads" },
+  { icon: Shield, label: "Built for secrets" },
+  { icon: Trash2, label: "Self-destructing links" },
 ];
 
 const Index = () => {
@@ -59,6 +73,7 @@ const Index = () => {
         {/* Animated background */}
         <div className="hero-bg" aria-hidden>
           <div className="hero-bg-grid" />
+          <div className="hero-bg-secure-vignette" />
           <div className="hero-bg-orb hero-bg-orb-1" />
           <div className="hero-bg-orb hero-bg-orb-2" />
           <div className="hero-bg-orb hero-bg-orb-3" />
@@ -71,24 +86,24 @@ const Index = () => {
             variants={stagger}
           >
             <motion.div
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-sm text-muted-foreground mb-6"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-sm text-muted-foreground mb-6 border border-primary/15"
               variants={fadeUp}
             >
-              <Zap className="w-3.5 h-3.5 text-foreground" />
-              API-first secret sharing
+              <Shield className="w-3.5 h-3.5 text-primary shrink-0" />
+              One-time links · encrypted at rest
             </motion.div>
             <motion.h1
               className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight font-display mb-5"
               variants={fadeUp}
             >
-              Secure, ephemeral secret sharing{" "}
-              <span className="font-bold">for your apps</span>
+              Hand off sensitive data once —{" "}
+              <span className="text-primary">then it is gone</span>
             </motion.h1>
             <motion.p
               className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto mb-8 leading-relaxed"
               variants={fadeUp}
             >
-              One API to create and consume one-time secrets. For devs, backend teams, and CI. Or use the web UI to share a note in seconds — no account required.
+              Purpose-built for passwords, recovery codes, keys, and confidential payloads. Use the REST API from CI and backends, or seal a secret below in seconds — no accounts and no long-lived storage of plain text.
             </motion.p>
             <motion.div
               className="flex flex-col sm:flex-row items-center justify-center gap-3"
@@ -101,7 +116,7 @@ const Index = () => {
                 </Link>
               </Button>
               <Button variant="outline-glow" size="xl" asChild>
-                <a href="#create">Create a note</a>
+                <a href="#create">Create a secret link</a>
               </Button>
             </motion.div>
           </motion.div>
@@ -114,7 +129,7 @@ const Index = () => {
             transition={{ duration: 0.4, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground text-center mb-10">
-              How it works
+              How secret sharing works
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {howItWorksSteps.map((item, i) => (
@@ -144,7 +159,7 @@ const Index = () => {
             </div>
           </motion.div>
 
-          {/* Trust signals + Note creation card */}
+          {/* Trust signals + secret link form */}
           <motion.div
             id="create"
             className="w-full max-w-xl mx-auto space-y-4 scroll-mt-20"
@@ -152,15 +167,20 @@ const Index = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.5 }}
           >
-            <div className="glass rounded-xl px-4 py-3 flex flex-wrap items-center justify-center gap-6 sm:gap-8 text-sm text-muted-foreground">
+            <p className="text-center text-xs font-medium uppercase tracking-widest text-muted-foreground">
+              Secure handoff
+            </p>
+            <div className="glass rounded-xl px-4 py-3 flex flex-wrap items-center justify-center gap-6 sm:gap-8 text-sm text-muted-foreground border border-border/80">
               {trustSignals.map((item) => (
                 <div key={item.label} className="flex items-center gap-2">
-                  <item.icon className="w-4 h-4 text-foreground shrink-0" />
+                  <item.icon className="w-4 h-4 text-primary shrink-0" />
                   <span>{item.label}</span>
                 </div>
               ))}
             </div>
-            <NoteForm />
+            <div className="rounded-2xl p-px bg-linear-to-b from-primary/30 via-primary/8 to-primary/20 shadow-[0_0_0_1px_hsl(var(--border)/0.5)]">
+              <NoteForm />
+            </div>
           </motion.div>
         </div>
       </section>
@@ -205,7 +225,7 @@ const Index = () => {
             Security without complexity
           </h2>
           <p className="text-muted-foreground text-lg max-w-lg mx-auto mb-8">
-            Everything you need to share sensitive information safely. Nothing you don't.
+            Time-boxed links, view caps, optional passphrases, and encryption at rest — so secrets leave your channel without sticking around in ours.
           </p>
           <Button variant="outline-glow" size="lg" asChild>
             <Link to="/features">
@@ -235,15 +255,15 @@ const Index = () => {
       >
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-28 text-center">
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">
-            Ready to share securely?
+            Ready for a safer handoff?
           </h2>
           <p className="text-muted-foreground text-lg max-w-md mx-auto mb-8">
-            No sign-up required. Create your first secure note in seconds.
+            No sign-up. Seal a one-time secret link in seconds — ideal when chat and email are the wrong place for the actual credential.
           </p>
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Button variant="hero" size="xl" asChild>
-              <a href="/">
-                Get started free
+              <a href="#create">
+                Create a secret link
                 <ArrowRight className="w-4 h-4" />
               </a>
             </Button>

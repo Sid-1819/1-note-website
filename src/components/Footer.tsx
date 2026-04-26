@@ -10,9 +10,9 @@ export function Footer() {
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center font-display font-bold text-foreground mb-3">
               <img
-                src={theme === "dark" ? "/1note-dark.svg" : "/1NOTE-removebg-preview 2.svg"}
-                alt="1Note"
-                className="h-7 w-auto"
+                src={theme === "dark" ? "/GET_SECRET-DARK-removebg-preview.svg" : "/GET_SECRET-removebg-preview.svg"}
+                alt="Get Secret"
+                className="h-8 w-auto"
               />
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
