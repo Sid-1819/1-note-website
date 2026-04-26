@@ -1,4 +1,4 @@
-# 1Note
+# getsecret
 
 Secure, ephemeral secret sharing for your apps. One API to create and consume one-time secrets — for devs, backend teams, and CI. Or use the web UI to share a note in seconds with no account required.
 
