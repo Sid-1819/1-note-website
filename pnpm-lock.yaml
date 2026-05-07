@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@1note/sdk':
-        specifier: 0.0.3
-        version: 0.0.3
+        specifier: 0.0.4
+        version: 0.0.4
       '@encatch/web-sdk':
         specifier: 1.1.0
         version: 1.1.0
@@ -234,8 +234,8 @@ importers:
 
 packages:
 
-  '@1note/sdk@0.0.3':
-    resolution: {integrity: sha512-qkx2L84rHO5IurCdGJGbcmyxOvXAbRc9Bevzmby10NqGy2V8nd11gcdXf0v9dM1BUvhbTUjVugtAoqFOznfCKQ==}
+  '@1note/sdk@0.0.4':
+    resolution: {integrity: sha512-M3e6zsqm3GKx0BFA8P//iz2I0B8WCl7LR9ODpRByFtEHoctr9EdU6cpbJ2vrm4lYITqmcV08Rqk9Cdnr1bfK9A==}
     hasBin: true
 
   '@adobe/css-tools@4.4.4':
@@ -3589,7 +3589,7 @@ packages:
 
 snapshots:
 
-  '@1note/sdk@0.0.3':
+  '@1note/sdk@0.0.4':
     dependencies:
       '@clack/prompts': 0.11.0
       clipboardy: 4.0.0

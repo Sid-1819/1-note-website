@@ -13,7 +13,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@1note/sdk": "0.0.3",
+    "@1note/sdk": "0.0.4",
     "@encatch/web-sdk": "1.1.0",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.11",

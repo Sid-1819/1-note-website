@@ -40,8 +40,9 @@ const Docs = () => {
               <li>Optional password protection.</li>
               <li>Built for developers, backend teams, and CI/CD — no account required.</li>
               <li>Web UI available for quick one-off sharing.</li>
-              <li>All content is encrypted; we never store plaintext.</li>
-              <li>REST over JSON. Base URL for examples: <code className="px-1.5 py-0.5 rounded bg-muted text-foreground font-mono text-xs">{API_BASE}</code> (replace with your deployment when applicable).</li>
+              <li>Notes without a passphrase are encrypted on the server at rest. With a passphrase, the web app encrypts content in the browser before upload — the server only stores ciphertext.</li>
+              <li>Optional single-file attachment via <code className="font-mono text-foreground">POST /s/multipart</code> (PNG, JPEG, WebP, PDF, plain text; max 1 MB).</li>
+              <li>REST over JSON (and multipart for uploads). Base URL for examples: <code className="px-1.5 py-0.5 rounded bg-muted text-foreground font-mono text-xs">{API_BASE}</code> (replace with your deployment when applicable).</li>
             </ul>
           </div>
         </section>
@@ -72,7 +73,7 @@ const Docs = () => {
             <div className="glass glow-card rounded-2xl p-6 sm:p-8">
               <h3 className="font-display font-semibold text-foreground mb-3">Read a note</h3>
               <p className="text-muted-foreground text-sm mb-4">
-                <code className="font-mono text-foreground">GET /s/:slug</code> — returns <code className="font-mono text-foreground">{"{ \"content\": \"...\" }"}</code>. One view is consumed only when a successful response (200 with content) is returned; at max views the note is deleted.
+                <code className="font-mono text-foreground">GET /s/:slug</code> — returns <code className="font-mono text-foreground">payloadMode</code>, <code className="font-mono text-foreground">content</code>, and optional <code className="font-mono text-foreground">attachment</code> <code className="font-mono text-foreground">{"{ mimeType, originalName, data }"}</code>. One view is consumed only when a successful response (200) is returned; at max views the note is deleted.
               </p>
               <ul className="text-muted-foreground text-sm space-y-1 mb-5 list-disc list-inside">
                 <li>Password-protected? Send header <code className="font-mono text-foreground">X-Note-Password</code>.</li>
@@ -106,11 +107,15 @@ const Docs = () => {
               </p>
               <p className="text-xs font-medium text-foreground mb-2">Request body (JSON)</p>
               <ul className="text-sm text-muted-foreground space-y-1 mb-4 list-disc list-inside">
-                <li><code className="text-foreground">content</code> (string, required) — Max 500 kB.</li>
+                <li><code className="text-foreground">content</code> (string, required) — Max 1 MB. With <code className="text-foreground">password</code>, must be client-side ciphertext JSON (see web app); without password, plaintext (server encrypts).</li>
                 <li><code className="text-foreground">expiresAt</code> (string, optional) — ISO 8601, must be a future date.</li>
                 <li><code className="text-foreground">maxViews</code> (number, optional) — 1–1000. Defaults to 1 if omitted.</li>
                 <li><code className="text-foreground">password</code> (string, optional) — 8–128 chars; must include lower, upper, digit, and symbol.</li>
               </ul>
+              <p className="text-xs font-medium text-foreground mb-2 mt-4">POST /s/multipart — Create with attachment</p>
+              <p className="text-sm text-muted-foreground mb-2">
+                <code className="text-foreground">multipart/form-data</code> fields: same as JSON <code className="text-foreground">content</code>, <code className="text-foreground">expiresAt</code>, <code className="text-foreground">maxViews</code>, <code className="text-foreground">password</code>, plus optional file field <code className="text-foreground">file</code>. With passphrase + file, also send <code className="text-foreground">attachmentMimeType</code> and <code className="text-foreground">attachmentFileName</code> for the original file (the uploaded bytes may be client-encrypted).
+              </p>
               <p className="text-xs font-medium text-foreground mb-2">Response</p>
               <p className="text-sm text-muted-foreground mb-2">201 — <code className="text-foreground">{"{ \"slug\", \"url\", \"expiresAt\", \"maxViews\" }"}</code></p>
               <CodeBlock
@@ -138,7 +143,7 @@ const Docs = () => {
                 <li><code className="text-foreground">X-Note-Password</code> (optional) — Passphrase if the note is protected.</li>
               </ul>
               <p className="text-xs font-medium text-foreground mb-2">Response</p>
-              <p className="text-sm text-muted-foreground mb-2">200 — <code className="text-foreground">{"{ \"content\": \"string\" }"}</code></p>
+              <p className="text-sm text-muted-foreground mb-2">200 — <code className="text-foreground">{"{ \"payloadMode\": \"SERVER_ENCRYPTED\" | \"CLIENT_CIPHERTEXT\", \"content\": \"string\", \"attachment\": null | { \"mimeType\", \"originalName\", \"data\" } }"}</code>. Response includes <code className="text-foreground">Cache-Control: no-store</code>.</p>
               <p className="text-xs font-medium text-foreground mb-2">Errors</p>
               <ul className="text-sm text-muted-foreground space-y-1">
                 <li>403 — <code className="text-foreground">code</code>: <code className="text-foreground">PASSWORD_REQUIRED</code> (send <code className="text-foreground">X-Note-Password</code>), <code className="text-foreground">INVALID_PASSWORD</code>, or <code className="text-foreground">WRONG_PASSWORD_LIMIT</code> (too many wrong attempts).</li>

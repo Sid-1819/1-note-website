@@ -1,13 +1,19 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Check, Copy, ChevronDown, ChevronUp, Loader2, AlertCircle, ArrowRight, Sparkles } from "lucide-react";
+import { Check, Copy, ChevronDown, ChevronUp, Loader2, AlertCircle, ArrowRight, Sparkles, Paperclip } from "lucide-react";
 import { toast } from "sonner";
 import { ApiError, oneNote } from "@/lib/api";
-const NOTE_MAX_LENGTH = 100;
+import {
+  encryptFileForPassword,
+  encryptNoteForPassword,
+  parseNoteEnvelopeSalt,
+} from "@/lib/note-crypto";
+
+const NOTE_MAX_LENGTH = 50_000;
 
 const DEFAULT_MAX_VIEWS = "1";
 const DEFAULT_EXPIRY = "5m";
@@ -32,6 +38,9 @@ const EXPIRY_MS: Record<string, number> = {
 
 const PASSWORD_MIN_LENGTH = 8;
 const PASSWORD_MAX_LENGTH = 128;
+
+const FILE_ACCEPT =
+  "image/png,image/jpeg,image/webp,application/pdf,text/plain,.png,.jpg,.jpeg,.webp,.pdf,.txt";
 
 function getExpiryDate(value: string): string {
   const now = Date.now();
@@ -70,6 +79,8 @@ export function NoteForm() {
   const [noteUrl, setNoteUrl] = useState("");
   const [copied, setCopied] = useState(false);
   const [createdWithPassword, setCreatedWithPassword] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async () => {
     if (!content.trim() || content.length > NOTE_MAX_LENGTH) return;
@@ -81,16 +92,52 @@ export function NoteForm() {
     setLoading(true);
     setError("");
 
-    const payload = {
-      content,
+    const basePayload = {
       expiresAt: getExpiryDate(expiry),
       maxViews: Number(maxViews),
-      ...(password.trim() ? { password: password.trim() } : {}),
     };
 
     try {
-      const data = await oneNote.createNote(payload);
-      setNoteUrl(data.url ?? `${window.location.origin}/s/${data.slug}`);
+      if (password.trim()) {
+        const pwd = password.trim();
+        const encContent = await encryptNoteForPassword(content.trim(), pwd);
+        if (file) {
+          const salt = parseNoteEnvelopeSalt(encContent);
+          const buf = new Uint8Array(await file.arrayBuffer());
+          const fileEnc = await encryptFileForPassword(buf, pwd, salt);
+          const blob = new Blob([fileEnc], { type: "application/octet-stream" });
+          const encryptedFile = new File([blob], file.name, { type: "application/octet-stream" });
+          const data = await oneNote.createNote({
+            content: encContent,
+            password: pwd,
+            file: encryptedFile,
+            attachmentMimeType: file.type || "application/octet-stream",
+            attachmentFileName: file.name,
+            ...basePayload,
+          });
+          setNoteUrl(data.url ?? `${window.location.origin}/s/${data.slug}`);
+        } else {
+          const data = await oneNote.createNote({
+            content: encContent,
+            password: pwd,
+            ...basePayload,
+          });
+          setNoteUrl(data.url ?? `${window.location.origin}/s/${data.slug}`);
+        }
+      } else if (file) {
+        const data = await oneNote.createNote({
+          content: content.trim(),
+          file,
+          ...basePayload,
+        });
+        setNoteUrl(data.url ?? `${window.location.origin}/s/${data.slug}`);
+      } else {
+        const data = await oneNote.createNote({
+          content: content.trim(),
+          ...basePayload,
+        });
+        setNoteUrl(data.url ?? `${window.location.origin}/s/${data.slug}`);
+      }
       setCreatedWithPassword(Boolean(password.trim()));
     } catch (e: unknown) {
       if (e instanceof ApiError && e.status === 429) {
@@ -122,6 +169,8 @@ export function NoteForm() {
     setError("");
     setCopied(false);
     setCreatedWithPassword(false);
+    setFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   if (noteUrl) {
@@ -155,7 +204,7 @@ export function NoteForm() {
         </div>
         <p className="text-xs text-muted-foreground">
           {createdWithPassword
-            ? "Share this link and the passphrase with your recipient. The link will self-destruct after it's been viewed."
+            ? "Share this link and the passphrase with your recipient. Content is encrypted in the browser before upload — we cannot read it or recover the passphrase."
             : "This link will self-destruct after it's been viewed. Share it only with the intended recipient."}
         </p>
         <Button variant="ghost" onClick={handleReset} className="w-full text-muted-foreground">
@@ -187,6 +236,26 @@ export function NoteForm() {
         <p className="text-xs text-muted-foreground">
           Limit: 3 sealed links per minute, 10 per day per device (abuse protection).
         </p>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept={FILE_ACCEPT}
+          className="hidden"
+          onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+        />
+        <Button type="button" variant="outline" size="sm" onClick={() => fileInputRef.current?.click()}>
+          <Paperclip className="w-4 h-4 mr-1" />
+          {file ? file.name : "Attach file (optional)"}
+        </Button>
+        {file && (
+          <Button type="button" variant="ghost" size="sm" onClick={() => { setFile(null); if (fileInputRef.current) fileInputRef.current.value = ""; }}>
+            Clear
+          </Button>
+        )}
+        <span className="text-xs text-muted-foreground">PNG, JPEG, WebP, PDF, or plain text — max 1 MB</span>
       </div>
 
       <button
@@ -244,7 +313,7 @@ export function NoteForm() {
               <p className="text-xs text-destructive">{passwordError(password)}</p>
             )}
             <p className="text-xs text-muted-foreground">
-              Recipient will need this to unlock the secret.
+              With a passphrase, your note is encrypted in this browser before upload. If you lose the passphrase, the content cannot be recovered.
             </p>
           </div>
         </div>

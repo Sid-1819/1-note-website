@@ -8,8 +8,9 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Lock, ArrowRight, Loader2 } from "lucide-react";
+import { Lock, ArrowRight, Loader2, Download } from "lucide-react";
 import { ApiError, getNote } from "@/lib/api";
+import { resolveNoteView, type ResolvedNoteView } from "@/lib/resolve-note-view";
 
 const NOTE_VIEW_MESSAGES = [
   "This is your friend's secret. Have a good look.",
@@ -32,10 +33,18 @@ const ViewNote = () => {
   const randomMessage = useMemo(() => getRandomNoteMessage(), []);
   const { slug } = useParams<{ slug: string }>();
   const metaRef = useRef<HTMLMetaElement | null>(null);
+  const fileUrlRef = useRef<string | null>(null);
   const [unlockPassword, setUnlockPassword] = useState("");
-  const [unlockedContent, setUnlockedContent] = useState<string | null>(null);
+  const [resolved, setResolved] = useState<ResolvedNoteView | null>(null);
+  const [resolveError, setResolveError] = useState<string | null>(null);
 
-  // Ensure note reveal pages are never indexed by search engines
+  const revokeFileUrl = () => {
+    if (fileUrlRef.current) {
+      URL.revokeObjectURL(fileUrlRef.current);
+      fileUrlRef.current = null;
+    }
+  };
+
   useEffect(() => {
     if (!slug) return;
     const meta = document.createElement("meta");
@@ -51,6 +60,12 @@ const ViewNote = () => {
     };
   }, [slug]);
 
+  useEffect(() => {
+    revokeFileUrl();
+    setResolved(null);
+    setResolveError(null);
+  }, [slug]);
+
   const {
     data,
     isPending,
@@ -64,10 +79,49 @@ const ViewNote = () => {
     gcTime: 0,
   });
 
+  useEffect(() => {
+    if (!data) return;
+    let cancelled = false;
+    setResolveError(null);
+    void (async () => {
+      try {
+        revokeFileUrl();
+        const r = await resolveNoteView(data);
+        if (cancelled) {
+          if (r.fileUrl) URL.revokeObjectURL(r.fileUrl);
+          return;
+        }
+        fileUrlRef.current = r.fileUrl;
+        setResolved(r);
+      } catch (e) {
+        if (!cancelled) {
+          setResolveError(e instanceof Error ? e.message : "Could not display this note");
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [data]);
+
+  useEffect(() => {
+    return () => {
+      revokeFileUrl();
+    };
+  }, []);
+
   const unlockMutation = useMutation({
     mutationFn: (pwd: string) => getNote(slug!, pwd),
-    onSuccess: (result) => {
-      setUnlockedContent(result.content);
+    onSuccess: async (result, pwd) => {
+      setResolveError(null);
+      try {
+        revokeFileUrl();
+        const r = await resolveNoteView(result, pwd);
+        fileUrlRef.current = r.fileUrl;
+        setResolved(r);
+      } catch (e) {
+        setResolveError(e instanceof Error ? e.message : "Could not decrypt this note");
+      }
     },
   });
 
@@ -133,7 +187,7 @@ const ViewNote = () => {
     );
   }
 
-  if (needPassword && !unlockedContent) {
+  if (needPassword && !resolved) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
         <Navbar />
@@ -165,6 +219,9 @@ const ViewNote = () => {
                     Too many wrong attempts. Try again in 15 minutes.
                   </AlertDescription>
                 </Alert>
+              )}
+              {resolveError && (
+                <p className="text-sm text-destructive">{resolveError}</p>
               )}
               <Button
                 type="submit"
@@ -218,8 +275,34 @@ const ViewNote = () => {
     );
   }
 
-  const contentToShow = unlockedContent ?? data?.content;
-  if (!contentToShow) return null;
+  if (data && !resolved && !resolveError) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col">
+        <Navbar />
+        <main className="flex-1 flex items-center justify-center px-4 py-20">
+          <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (resolveError && !needPassword) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col">
+        <Navbar />
+        <main className="flex-1 flex items-center justify-center px-4 py-20">
+          <Alert variant="destructive" className="max-w-md">
+            <AlertTitle>Could not open note</AlertTitle>
+            <AlertDescription>{resolveError}</AlertDescription>
+          </Alert>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!resolved) return null;
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -247,8 +330,18 @@ const ViewNote = () => {
               transition={{ delay: 0.2, duration: 0.35 }}
             >
               <pre className="whitespace-pre-wrap rounded-md border bg-muted/50 p-4 text-sm font-mono text-left">
-                {contentToShow}
+                {resolved.text}
               </pre>
+              {resolved.fileUrl && (
+                <div className="flex justify-center">
+                  <Button variant="outline" size="sm" asChild>
+                    <a href={resolved.fileUrl} download={resolved.fileLabel ?? "attachment"}>
+                      <Download className="w-4 h-4 mr-2" />
+                      Download attachment
+                    </a>
+                  </Button>
+                </div>
+              )}
               <p className="text-muted-foreground text-sm text-center">
                 {randomMessage}
               </p>
